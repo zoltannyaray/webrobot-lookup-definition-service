@@ -12,7 +12,7 @@ import com.dayswideawake.webrobot.lookupdefinition.backend.domain.Selector;
 import com.dayswideawake.webrobot.lookupdefinition.backend.domain.Site;
 import com.dayswideawake.webrobot.lookupdefinition.backend.repository.entity.LookupDefinitionEntity;
 
-@Component("abc")
+@Component
 public class LookupDefinitionEntityToDomainConverter implements Converter<LookupDefinitionEntity, LookupDefinition> {
 
     private ConversionService conversionService;

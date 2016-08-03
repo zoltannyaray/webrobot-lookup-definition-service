@@ -11,11 +11,10 @@ import com.dayswideawake.webrobot.lookupdefinition.backend.repository.entity.Sel
 import com.dayswideawake.webrobot.lookupdefinition.backend.repository.entity.SiteEntity;
 
 @Component
-public class LookupDefinitionDomainToEntityConverter implements Converter<LookupDefinition, LookupDefinitionEntity>{
+public class LookupDefinitionDomainToEntityConverter implements Converter<LookupDefinition, LookupDefinitionEntity> {
 
     private ConversionService conversionService;
-    
-    
+
     @Autowired
     public void setConversionService(ConversionService conversionService) {
         this.conversionService = conversionService;
@@ -30,5 +29,4 @@ public class LookupDefinitionDomainToEntityConverter implements Converter<Lookup
         return new LookupDefinitionEntity(siteEntity, selectorEntity, interval, lastLookupAt);
     }
 
-    
 }

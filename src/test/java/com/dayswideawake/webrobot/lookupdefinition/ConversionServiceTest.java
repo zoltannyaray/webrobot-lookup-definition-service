@@ -1,36 +1,59 @@
 package com.dayswideawake.webrobot.lookupdefinition;
 
-import static org.junit.Assert.*;
+import static org.testng.Assert.*;
 
-import java.util.Date;
-
-import org.junit.Test;
-import org.junit.runner.RunWith;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.core.convert.ConversionService;
-import org.springframework.test.context.junit4.SpringRunner;
+import org.springframework.test.context.testng.AbstractTestNGSpringContextTests;
+import org.testng.annotations.Test;
 
 import com.dayswideawake.webrobot.lookupdefinition.backend.domain.LookupDefinition;
+import com.dayswideawake.webrobot.lookupdefinition.backend.domain.Selector;
+import com.dayswideawake.webrobot.lookupdefinition.backend.domain.Site;
 import com.dayswideawake.webrobot.lookupdefinition.backend.repository.entity.LookupDefinitionEntity;
 import com.dayswideawake.webrobot.lookupdefinition.backend.repository.entity.SelectorEntity;
 import com.dayswideawake.webrobot.lookupdefinition.backend.repository.entity.SiteEntity;
 
-@RunWith(SpringRunner.class)
 @SpringBootTest
-public class ConversionServiceTest {
+public class ConversionServiceTest extends AbstractTestNGSpringContextTests {
 
     @Autowired
     private ConversionService conversionService;
     
     @Test
-    public void test() {
-        SiteEntity siteEntity = new SiteEntity();
-        SelectorEntity selectorEntity = new SelectorEntity();
-        Long interval = 10L;
-        Long lastLookupAt = new Date().getTime();
-        LookupDefinitionEntity entity = new LookupDefinitionEntity(siteEntity, selectorEntity, interval, lastLookupAt);
-        LookupDefinition domain = conversionService.convert(entity, LookupDefinition.class);
+    public void shouldConvertLookupDefinitionEntityToDomain() {
+        assertTrue(conversionService.canConvert(LookupDefinitionEntity.class, LookupDefinition.class));
+    }
+    
+    @Test
+    public void shouldNotConvert(){
+        assertFalse(conversionService.canConvert(Site.class, Selector.class));
+    }
+    
+    @Test
+    public void shouldConvertLookupDefinitionDomainToEntity(){
+        assertTrue(conversionService.canConvert(LookupDefinition.class, LookupDefinitionEntity.class));
+    }
+    
+    @Test
+    public void shouldConvertSiteEntityToDomain() {
+        assertTrue(conversionService.canConvert(SiteEntity.class, Site.class));
+    }
+    
+    @Test
+    public void shouldConvertSiteDomainToEntity(){
+        assertTrue(conversionService.canConvert(Site.class, SiteEntity.class));
+    }
+    
+    @Test
+    public void shouldConvertSelectorEntityToDomain() {
+        assertTrue(conversionService.canConvert(SelectorEntity.class, Selector.class));
+    }
+    
+    @Test
+    public void shouldConvertSelectorDomainToEntity(){
+        assertTrue(conversionService.canConvert(Selector.class, SelectorEntity.class));
     }
 
 }
