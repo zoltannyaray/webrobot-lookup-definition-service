@@ -1,22 +1,38 @@
 package com.dayswideawake.webrobot.lookupdefinition.backend.repository.entity;
 
+import javax.persistence.CascadeType;
 import javax.persistence.Entity;
 import javax.persistence.GeneratedValue;
 import javax.persistence.Id;
+import javax.persistence.OneToOne;
 
 @Entity
-public class LookupDefintionEntity {
+public class LookupDefinitionEntity {
 
     @Id
     @GeneratedValue
     private Long id;
+    @OneToOne(cascade=CascadeType.ALL)
     private SiteEntity site;
+    @OneToOne(cascade=CascadeType.ALL)
     private SelectorEntity selector;
     private Long intervalInSeconds;
     private Long lastLookupAt;
     
-    public LookupDefintionEntity() {
+    public LookupDefinitionEntity() {
         super();
+    }
+    
+    public LookupDefinitionEntity(SiteEntity site, SelectorEntity selector, Long intervalInSeconds) {
+        this();
+        this.site = site;
+        this.selector = selector;
+        this.intervalInSeconds = intervalInSeconds;
+    }
+
+    public LookupDefinitionEntity(SiteEntity site, SelectorEntity selector, Long intervalInSeconds, Long lastLookupAt) {
+        this(site, selector, intervalInSeconds);
+        this.lastLookupAt = lastLookupAt;
     }
 
     public Long getId() {
