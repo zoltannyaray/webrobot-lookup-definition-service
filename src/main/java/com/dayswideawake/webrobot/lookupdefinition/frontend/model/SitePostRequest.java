@@ -1,5 +1,5 @@
 package com.dayswideawake.webrobot.lookupdefinition.frontend.model;
 
-public class SiteModel {
+public class SitePostRequest {
 
 }

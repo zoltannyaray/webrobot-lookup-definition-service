@@ -1,13 +1,13 @@
 package com.dayswideawake.webrobot.lookupdefinition.frontend.model;
 
-public class AddLookupDefinitionRequest {
+public class LookupDefinitionPostRequest {
 
     private Long accountId;
-    private SiteModel site;
-    private SelectorModel selector;
+    private SitePostRequest site;
+    private SelectorPostRequest selector;
     private Long intervalInSeconds;
 
-    public AddLookupDefinitionRequest() {
+    public LookupDefinitionPostRequest() {
         super();
     }
 
@@ -19,19 +19,19 @@ public class AddLookupDefinitionRequest {
         this.accountId = accountId;
     }
 
-    public SiteModel getSite() {
+    public SitePostRequest getSite() {
         return site;
     }
 
-    public void setSite(SiteModel site) {
+    public void setSite(SitePostRequest site) {
         this.site = site;
     }
 
-    public SelectorModel getSelector() {
+    public SelectorPostRequest getSelector() {
         return selector;
     }
 
-    public void setSelector(SelectorModel selector) {
+    public void setSelector(SelectorPostRequest selector) {
         this.selector = selector;
     }
 
