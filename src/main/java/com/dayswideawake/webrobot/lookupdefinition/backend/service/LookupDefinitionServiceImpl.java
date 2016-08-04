@@ -26,8 +26,8 @@ public class LookupDefinitionServiceImpl implements LookupDefinitionService {
     }
 
     @Override
-    public LookupDefinition addLookupDefinition(LookupDefinition lookupDefintion){
-        LookupDefinitionEntity entity = conversionService.convert(lookupDefintion, LookupDefinitionEntity.class);
+    public LookupDefinition addLookupDefinition(LookupDefinition lookupDefinition){
+        LookupDefinitionEntity entity = conversionService.convert(lookupDefinition, LookupDefinitionEntity.class);
         entity = lookupDefinitionRepository.save(entity);
         return conversionService.convert(entity, LookupDefinition.class);
     }

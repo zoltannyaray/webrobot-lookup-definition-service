@@ -8,6 +8,6 @@ public interface LookupDefinitionService {
 
     public List<LookupDefinition> getLookupDefinitionsByAccountId(Long accountId);
 
-    LookupDefinition addLookupDefinition(LookupDefinition lookupDefintion);
+    LookupDefinition addLookupDefinition(LookupDefinition lookupDefinition);
     
 }

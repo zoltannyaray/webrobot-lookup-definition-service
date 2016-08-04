@@ -16,17 +16,24 @@ public class LookupDefinitionDomainToEntityConverter implements Converter<Lookup
     private ConversionService conversionService;
 
     @Autowired
-    public void setConversionService(ConversionService conversionService) {
+    public LookupDefinitionDomainToEntityConverter(ConversionService conversionService) {
+        super();
         this.conversionService = conversionService;
     }
 
     @Override
-    public LookupDefinitionEntity convert(LookupDefinition source) {
-        SiteEntity siteEntity = conversionService.convert(source.getSite(), SiteEntity.class);
-        SelectorEntity selectorEntity = conversionService.convert(source.getSelector(), SelectorEntity.class);
-        Long interval = source.getIntervalInSeconds();
-        Long lastLookupAt = source.getLastLookupAt().getTime();
-        return new LookupDefinitionEntity(siteEntity, selectorEntity, interval, lastLookupAt);
+    public LookupDefinitionEntity convert(LookupDefinition lookupDefinition) {
+        SiteEntity siteEntity = conversionService.convert(lookupDefinition.getSite(), SiteEntity.class);
+        SelectorEntity selectorEntity = conversionService.convert(lookupDefinition.getSelector(), SelectorEntity.class);
+        Long interval = lookupDefinition.getIntervalInSeconds();
+        LookupDefinitionEntity lookupDefinitionEntity =new LookupDefinitionEntity(siteEntity, selectorEntity, interval); 
+        if(lookupDefinition.getAccountId() != null){
+            lookupDefinitionEntity.setAccountId(lookupDefinition.getAccountId());
+        }
+        if(lookupDefinition.getLastLookupAt() != null){
+            lookupDefinitionEntity.setLastLookupAt(lookupDefinition.getLastLookupAt().getTime());
+        }
+        return lookupDefinitionEntity;
     }
 
 }

@@ -12,6 +12,7 @@ public class LookupDefinitionEntity {
     @Id
     @GeneratedValue
     private Long id;
+    private Long accountId;
     @OneToOne(cascade=CascadeType.ALL)
     private SiteEntity site;
     @OneToOne(cascade=CascadeType.ALL)
@@ -30,17 +31,20 @@ public class LookupDefinitionEntity {
         this.intervalInSeconds = intervalInSeconds;
     }
 
-    public LookupDefinitionEntity(SiteEntity site, SelectorEntity selector, Long intervalInSeconds, Long lastLookupAt) {
-        this(site, selector, intervalInSeconds);
-        this.lastLookupAt = lastLookupAt;
-    }
-
     public Long getId() {
         return id;
     }
 
     public void setId(Long id) {
         this.id = id;
+    }
+
+    public Long getAccountId() {
+        return accountId;
+    }
+
+    public void setAccountId(Long accountId) {
+        this.accountId = accountId;
     }
 
     public SiteEntity getSite() {

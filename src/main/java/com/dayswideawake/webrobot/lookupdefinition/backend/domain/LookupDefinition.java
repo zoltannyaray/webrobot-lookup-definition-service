@@ -10,12 +10,19 @@ public class LookupDefinition {
     private Long intervalInSeconds;
     private Date lastLookupAt;
 
-    public LookupDefinition(Site site, Selector selector, Long intervalInSeconds, Date lastLookupAt) {
+    public LookupDefinition(Site site, Selector selector, Long intervalInSeconds) {
         super();
         this.site = site;
         this.selector = selector;
         this.intervalInSeconds = intervalInSeconds;
-        this.lastLookupAt = lastLookupAt;
+    }
+
+    public LookupDefinition(Long accountId, Site site, Selector selector, Long intervalInSeconds) {
+        super();
+        this.accountId = accountId;
+        this.site = site;
+        this.selector = selector;
+        this.intervalInSeconds = intervalInSeconds;
     }
 
     public Long getAccountId() {

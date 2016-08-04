@@ -1,8 +1,7 @@
 package com.dayswideawake.webrobot.lookupdefinition.backend.service;
 
-import static org.testng.Assert.*;
+import static org.testng.Assert.assertEquals;
 
-import java.util.Date;
 import java.util.List;
 
 import org.springframework.beans.factory.annotation.Autowired;
@@ -19,15 +18,14 @@ public class LookupDefinitionServiceImplTest extends AbstractTestNGSpringContext
 
     @Autowired
     private LookupDefinitionService lookupDefinitionService;
-    
+
     @Test
-    public void test() {
+    public void shouldSaveAndGetLookupDefinition() {
         Long accountId = 1L;
         Site site = new Site();
         Selector selector = new Selector();
         Long intervalInSeconds = 10L;
-        Date lastLookupAt = new Date();
-        LookupDefinition lookupDefintion = new LookupDefinition(site, selector, intervalInSeconds, lastLookupAt);
+        LookupDefinition lookupDefintion = new LookupDefinition(site, selector, intervalInSeconds);
         lookupDefinitionService.addLookupDefinition(lookupDefintion);
         List<LookupDefinition> lookupDefintions = lookupDefinitionService.getLookupDefinitionsByAccountId(accountId);
         assertEquals(1, lookupDefintions.size());

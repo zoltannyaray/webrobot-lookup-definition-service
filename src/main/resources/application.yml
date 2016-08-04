@@ -1,4 +1,10 @@
+#server:
+#  port: 9000
+#server:
+#  context-path: /lookup-definition-service
 spring:
+#  config:
+#    name: lookup-definition-service
   datasource:
     url: jdbc:hsqldb:mem:webrobot
     driver-class-name: org.hsqldb.jdbc.JDBCDriver
@@ -10,6 +16,8 @@ spring:
   output:
     ansi:
       enabled: always
+#  main:
+#    web-environment: false
       
 ---
 
