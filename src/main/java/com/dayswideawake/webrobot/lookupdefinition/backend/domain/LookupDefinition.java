@@ -4,6 +4,7 @@ import java.util.Date;
 
 public class LookupDefinition {
 
+    private Long id;
     private Long accountId;
     private Site site;
     private Selector selector;
@@ -23,6 +24,14 @@ public class LookupDefinition {
         this.site = site;
         this.selector = selector;
         this.intervalInSeconds = intervalInSeconds;
+    }
+
+    public void setId(Long id) {
+        this.id = id;
+    }
+
+    public Long getId() {
+        return id;
     }
 
     public Long getAccountId() {

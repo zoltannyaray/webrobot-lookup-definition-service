@@ -1,6 +1,8 @@
 package com.dayswideawake.webrobot.lookupdefinition.backend.service;
 
 import java.util.List;
+import java.util.logging.Level;
+import java.util.logging.Logger;
 import java.util.stream.Collectors;
 
 import org.springframework.beans.factory.annotation.Autowired;
@@ -16,6 +18,7 @@ public class LookupDefinitionServiceImpl implements LookupDefinitionService {
 
     private LookupDefinitionRepository lookupDefinitionRepository;
     private LookupDefinitionDomainEntityTransformer lookupDefinitionDomainEntityTransformer;
+    private Logger logger = Logger.getLogger(LookupDefinitionServiceImpl.class.getName()); 
 
     @Autowired
     public LookupDefinitionServiceImpl(LookupDefinitionRepository lookupDefinitionRepository, LookupDefinitionDomainEntityTransformer lookupDefinitionDomainEntityTransformer) {
@@ -26,8 +29,10 @@ public class LookupDefinitionServiceImpl implements LookupDefinitionService {
 
     @Override
     public LookupDefinition addLookupDefinition(LookupDefinition lookupDefinition) {
+        logger.log(Level.INFO, "CALL addLookupDefinition");
         LookupDefinitionEntity entity = lookupDefinitionDomainEntityTransformer.domainToEntity(lookupDefinition);
         entity = lookupDefinitionRepository.save(entity);
+        logger.log(Level.INFO, "Saved Entity ID: " + entity.getId());
         return lookupDefinitionDomainEntityTransformer.entityToDomain(entity);
     }
 
@@ -38,6 +43,12 @@ public class LookupDefinitionServiceImpl implements LookupDefinitionService {
                 .stream()
                 .map(entity -> lookupDefinitionDomainEntityTransformer.entityToDomain(entity))
                 .collect(Collectors.toList());
+    }
+
+    @Override
+    public LookupDefinition getLookupDefinitionById(Long id) {
+        LookupDefinitionEntity lookupDefinitionEntity = lookupDefinitionRepository.findOne(id);
+        return lookupDefinitionDomainEntityTransformer.entityToDomain(lookupDefinitionEntity);
     }
 
 }

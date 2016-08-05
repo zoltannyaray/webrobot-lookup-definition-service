@@ -44,6 +44,9 @@ public class LookupDefinitionDomainEntityTransformer {
         Selector selector = selectorDomainEntityTransformer.entityToDomain(lookupDefinitionEntity.getSelector());
         Long intervalInSeconds = lookupDefinitionEntity.getIntervalInSeconds();
         LookupDefinition lookupDefinition = new LookupDefinition(site, selector, intervalInSeconds);
+        if(lookupDefinitionEntity.getId() != null){
+            lookupDefinition.setId(lookupDefinitionEntity.getId());
+        }
         if(lookupDefinitionEntity.getAccountId() != null){
             lookupDefinition.setAccountId(lookupDefinitionEntity.getAccountId());
         }

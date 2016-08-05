@@ -10,4 +10,6 @@ public interface LookupDefinitionService {
 
     LookupDefinition addLookupDefinition(LookupDefinition lookupDefinition);
     
+    LookupDefinition getLookupDefinitionById(Long id);
+    
 }
