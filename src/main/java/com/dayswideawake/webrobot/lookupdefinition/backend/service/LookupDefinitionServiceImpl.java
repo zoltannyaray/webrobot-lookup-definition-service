@@ -1,6 +1,7 @@
 package com.dayswideawake.webrobot.lookupdefinition.backend.service;
 
 import java.util.List;
+import java.util.Optional;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 import java.util.stream.Collectors;
@@ -16,39 +17,43 @@ import com.dayswideawake.webrobot.lookupdefinition.backend.service.transformer.L
 @Service
 public class LookupDefinitionServiceImpl implements LookupDefinitionService {
 
-    private LookupDefinitionRepository lookupDefinitionRepository;
-    private LookupDefinitionDomainEntityTransformer lookupDefinitionDomainEntityTransformer;
+    private LookupDefinitionRepository repository;
+    private LookupDefinitionDomainEntityTransformer domainEntityTransformer;
     private Logger logger = Logger.getLogger(LookupDefinitionServiceImpl.class.getName()); 
 
     @Autowired
-    public LookupDefinitionServiceImpl(LookupDefinitionRepository lookupDefinitionRepository, LookupDefinitionDomainEntityTransformer lookupDefinitionDomainEntityTransformer) {
+    public LookupDefinitionServiceImpl(LookupDefinitionRepository repository, LookupDefinitionDomainEntityTransformer domainEntityTransformer) {
         super();
-        this.lookupDefinitionRepository = lookupDefinitionRepository;
-        this.lookupDefinitionDomainEntityTransformer = lookupDefinitionDomainEntityTransformer;
+        this.repository = repository;
+        this.domainEntityTransformer = domainEntityTransformer;
     }
 
     @Override
     public LookupDefinition addLookupDefinition(LookupDefinition lookupDefinition) {
         logger.log(Level.INFO, "CALL addLookupDefinition");
-        LookupDefinitionEntity entity = lookupDefinitionDomainEntityTransformer.domainToEntity(lookupDefinition);
-        entity = lookupDefinitionRepository.save(entity);
+        LookupDefinitionEntity entity = domainEntityTransformer.domainToEntity(lookupDefinition);
+        entity = repository.save(entity);
         logger.log(Level.INFO, "Saved Entity ID: " + entity.getId());
-        return lookupDefinitionDomainEntityTransformer.entityToDomain(entity);
+        return domainEntityTransformer.entityToDomain(entity);
     }
 
     @Override
     public List<LookupDefinition> getLookupDefinitionsByAccountId(Long accountId) {
-        List<LookupDefinitionEntity> entities = lookupDefinitionRepository.findAll();
+        List<LookupDefinitionEntity> entities = repository.findAll();
         return entities
                 .stream()
-                .map(entity -> lookupDefinitionDomainEntityTransformer.entityToDomain(entity))
+                .map(entity -> domainEntityTransformer.entityToDomain(entity))
                 .collect(Collectors.toList());
     }
 
     @Override
-    public LookupDefinition getLookupDefinitionById(Long id) {
-        LookupDefinitionEntity lookupDefinitionEntity = lookupDefinitionRepository.findOne(id);
-        return lookupDefinitionDomainEntityTransformer.entityToDomain(lookupDefinitionEntity);
+    public Optional<LookupDefinition> getLookupDefinitionById(Long id) {
+        LookupDefinitionEntity entity = repository.findOne(id);
+        LookupDefinition lookupDefinition = null;
+        if(entity != null){
+            lookupDefinition = domainEntityTransformer.entityToDomain(entity);
+        }
+        return Optional.ofNullable(lookupDefinition);
     }
 
 }

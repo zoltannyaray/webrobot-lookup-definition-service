@@ -1,6 +1,7 @@
 package com.dayswideawake.webrobot.lookupdefinition.backend.service;
 
 import java.util.List;
+import java.util.Optional;
 
 import com.dayswideawake.webrobot.lookupdefinition.backend.domain.LookupDefinition;
 
@@ -10,6 +11,6 @@ public interface LookupDefinitionService {
 
     LookupDefinition addLookupDefinition(LookupDefinition lookupDefinition);
     
-    LookupDefinition getLookupDefinitionById(Long id);
+    Optional<LookupDefinition> getLookupDefinitionById(Long id);
     
 }
