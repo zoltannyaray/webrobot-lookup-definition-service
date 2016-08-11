@@ -21,11 +21,9 @@ public class LookupDefinitionEntity {
     private Long lastLookupAt;
     
     public LookupDefinitionEntity() {
-        super();
     }
     
     public LookupDefinitionEntity(SiteEntity site, SelectorEntity selector, Long intervalInSeconds) {
-        this();
         this.site = site;
         this.selector = selector;
         this.intervalInSeconds = intervalInSeconds;

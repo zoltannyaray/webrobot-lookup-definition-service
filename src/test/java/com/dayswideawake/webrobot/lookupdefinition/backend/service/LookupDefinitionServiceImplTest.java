@@ -2,11 +2,14 @@ package com.dayswideawake.webrobot.lookupdefinition.backend.service;
 
 import static org.testng.Assert.assertEquals;
 
+import java.net.MalformedURLException;
+import java.net.URL;
 import java.util.List;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.test.context.testng.AbstractTestNGSpringContextTests;
+import org.springframework.web.util.UriComponentsBuilder;
 import org.testng.annotations.Test;
 
 import com.dayswideawake.webrobot.lookupdefinition.backend.domain.LookupDefinition;
@@ -20,9 +23,10 @@ public class LookupDefinitionServiceImplTest extends AbstractTestNGSpringContext
     private LookupDefinitionService lookupDefinitionService;
 
     @Test
-    public void shouldSaveAndGetLookupDefinition() {
+    public void shouldSaveAndGetLookupDefinition() throws MalformedURLException {
         Long accountId = 1L;
-        Site site = new Site();
+        URL url = UriComponentsBuilder.fromUriString("http://example.com").build().toUri().toURL();
+        Site site = new Site(url);
         Selector selector = new Selector();
         Long intervalInSeconds = 10L;
         LookupDefinition lookupDefintion = new LookupDefinition(site, selector, intervalInSeconds);

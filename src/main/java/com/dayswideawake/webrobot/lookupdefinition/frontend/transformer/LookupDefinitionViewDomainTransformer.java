@@ -10,6 +10,7 @@ import com.dayswideawake.webrobot.lookupdefinition.backend.domain.Site;
 import com.dayswideawake.webrobot.lookupdefinition.frontend.controller.ViewLookupDefinitionController;
 import com.dayswideawake.webrobot.lookupdefinition.frontend.model.LookupDefinitionDetails;
 import com.dayswideawake.webrobot.lookupdefinition.frontend.model.SelectorDetails;
+import com.dayswideawake.webrobot.lookupdefinition.frontend.model.SiteDetails;
 import com.dayswideawake.webrobot.lookupdefinition.frontend.model.AddLookupDefinitionRequest;
 import com.dayswideawake.webrobot.lookupdefinition.frontend.model.AddLookupDefinitionResponse;
 import com.dayswideawake.webrobot.lookupdefinition.frontend.model.ViewLookupDefinitionResponse;
@@ -17,18 +18,18 @@ import com.dayswideawake.webrobot.lookupdefinition.frontend.model.ViewLookupDefi
 @Component
 public class LookupDefinitionViewDomainTransformer {
 
-    private SiteViewDomainTransformer sitePostRequestDomainTransformer;
+    private SiteViewDomainTransformer siteViewDomainTransformer;
     private SelectorViewDomainTransformer selectorViewDomainTransformer;
 
     @Autowired
     public LookupDefinitionViewDomainTransformer(SiteViewDomainTransformer sitePostRequestDomainTransformer, SelectorViewDomainTransformer selectorPostRequestDomainTransformer) {
         super();
-        this.sitePostRequestDomainTransformer = sitePostRequestDomainTransformer;
+        this.siteViewDomainTransformer = sitePostRequestDomainTransformer;
         this.selectorViewDomainTransformer = selectorPostRequestDomainTransformer;
     }
 
     public LookupDefinition postRequestToDomain(AddLookupDefinitionRequest addLookupDefinitionRequest) {
-        Site site = sitePostRequestDomainTransformer.postRequestToDomain(addLookupDefinitionRequest.getSite());
+        Site site = siteViewDomainTransformer.postRequestToDomain(addLookupDefinitionRequest.getSite());
         Selector selector = selectorViewDomainTransformer.addRequestToDomain(addLookupDefinitionRequest.getSelector());
         Long intervalInSeconds = addLookupDefinitionRequest.getIntervalInSeconds();
         LookupDefinition result = new LookupDefinition(site, selector, intervalInSeconds);
@@ -56,7 +57,8 @@ public class LookupDefinitionViewDomainTransformer {
         Long accountId = domain.getAccountId();
         Long intervalInSeconds = domain.getIntervalInSeconds();
         SelectorDetails selector = selectorViewDomainTransformer.domainToDetails(domain.getSelector());
-        return new LookupDefinitionDetails(id, accountId, intervalInSeconds, selector);
+        SiteDetails site = siteViewDomainTransformer.domainToDetails(domain.getSite());
+        return new LookupDefinitionDetails(id, accountId, intervalInSeconds, selector, site);
     }
 
 }

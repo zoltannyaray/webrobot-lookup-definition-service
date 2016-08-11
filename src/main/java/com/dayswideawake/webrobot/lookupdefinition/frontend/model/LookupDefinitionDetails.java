@@ -8,16 +8,18 @@ public class LookupDefinitionDetails {
     private Long accountId;
     private Long intervalInSeconds;
     private SelectorDetails selector;
+    private SiteDetails site;
 
     @JsonCreator
     public LookupDefinitionDetails() {
     }
 
-    public LookupDefinitionDetails(Long id, Long accountId, Long intervalInSeconds, SelectorDetails selector) {
+    public LookupDefinitionDetails(Long id, Long accountId, Long intervalInSeconds, SelectorDetails selector, SiteDetails site) {
         this.id = id;
         this.accountId = accountId;
         this.intervalInSeconds = intervalInSeconds;
         this.selector = selector;
+        this.site = site;
     }
 
     public Long getId() {
@@ -46,6 +48,10 @@ public class LookupDefinitionDetails {
 
     public SelectorDetails getSelector() {
         return selector;
+    }
+
+    public SiteDetails getSite() {
+        return site;
     }
 
 }

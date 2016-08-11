@@ -1,20 +1,18 @@
 package com.dayswideawake.webrobot.lookupdefinition.frontend.model;
 
-public class AddSiteRequest {
+public class SiteDetails {
 
     private String url;
 
-    public AddSiteRequest() {
+    public SiteDetails() {
     }
 
-    public AddSiteRequest(String url) {
+    public SiteDetails(String url) {
         this.url = url;
     }
 
     public String getUrl() {
         return url;
     }
-    
-    
-    
+
 }
