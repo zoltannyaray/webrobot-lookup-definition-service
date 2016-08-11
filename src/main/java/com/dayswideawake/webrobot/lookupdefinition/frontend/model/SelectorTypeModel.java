@@ -1,5 +1,7 @@
 package com.dayswideawake.webrobot.lookupdefinition.frontend.model;
 
-public class SelectorPostRequest {
+public enum SelectorTypeModel {
 
+    CSS, XPATH;
+    
 }

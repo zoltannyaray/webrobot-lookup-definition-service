@@ -1,14 +1,51 @@
 package com.dayswideawake.webrobot.lookupdefinition.frontend.model;
 
-import org.springframework.hateoas.ResourceSupport;
-
 import com.fasterxml.jackson.annotation.JsonCreator;
 
-public class LookupDefinitionDetails extends ResourceSupport {
+public class LookupDefinitionDetails {
+
+    private Long id;
+    private Long accountId;
+    private Long intervalInSeconds;
+    private SelectorDetails selector;
 
     @JsonCreator
     public LookupDefinitionDetails() {
-        super();
+    }
+
+    public LookupDefinitionDetails(Long id, Long accountId, Long intervalInSeconds, SelectorDetails selector) {
+        this.id = id;
+        this.accountId = accountId;
+        this.intervalInSeconds = intervalInSeconds;
+        this.selector = selector;
+    }
+
+    public Long getId() {
+        return id;
+    }
+
+    public void setId(Long id) {
+        this.id = id;
+    }
+
+    public Long getAccountId() {
+        return accountId;
+    }
+
+    public void setAccountId(Long accountId) {
+        this.accountId = accountId;
+    }
+
+    public Long getIntervalInSeconds() {
+        return intervalInSeconds;
+    }
+
+    public void setIntervalInSeconds(Long intervalInSeconds) {
+        this.intervalInSeconds = intervalInSeconds;
+    }
+
+    public SelectorDetails getSelector() {
+        return selector;
     }
 
 }

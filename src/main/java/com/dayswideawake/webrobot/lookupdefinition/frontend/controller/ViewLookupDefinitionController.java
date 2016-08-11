@@ -11,11 +11,10 @@ import org.springframework.web.bind.annotation.RestController;
 import com.dayswideawake.webrobot.lookupdefinition.backend.domain.LookupDefinition;
 import com.dayswideawake.webrobot.lookupdefinition.backend.service.LookupDefinitionService;
 import com.dayswideawake.webrobot.lookupdefinition.frontend.exception.LookupDefinitionNotFoundException;
-import com.dayswideawake.webrobot.lookupdefinition.frontend.model.LookupDefinitionDetails;
+import com.dayswideawake.webrobot.lookupdefinition.frontend.model.ViewLookupDefinitionResponse;
 import com.dayswideawake.webrobot.lookupdefinition.frontend.transformer.LookupDefinitionViewDomainTransformer;
 
 @RestController
-@RequestMapping(path = "/lookup-definitions/{id}", method = RequestMethod.GET)
 public class ViewLookupDefinitionController {
 
     private LookupDefinitionService lookupDefinitionService;
@@ -27,13 +26,13 @@ public class ViewLookupDefinitionController {
         this.lookupDefinitionViewDomainTransformer = lookupDefinitionViewDomainTransformer;
     }
 
-    @RequestMapping
-    public LookupDefinitionDetails view(@PathVariable Long id) {
+    @RequestMapping(path = "/lookup-definitions/{id}", method = RequestMethod.GET)
+    public ViewLookupDefinitionResponse view(@PathVariable Long id) {
         Optional<LookupDefinition> lookupDefinition = lookupDefinitionService.getLookupDefinitionById(id);
         if (!lookupDefinition.isPresent()) {
             throw new LookupDefinitionNotFoundException(id);
         }
-        return lookupDefinitionViewDomainTransformer.domainToDetails(lookupDefinition.get());
+        return lookupDefinitionViewDomainTransformer.domainToViewResponse(lookupDefinition.get());
     }
 
 }

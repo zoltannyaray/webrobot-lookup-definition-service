@@ -9,25 +9,27 @@ import com.dayswideawake.webrobot.lookupdefinition.backend.domain.Selector;
 import com.dayswideawake.webrobot.lookupdefinition.backend.domain.Site;
 import com.dayswideawake.webrobot.lookupdefinition.frontend.controller.ViewLookupDefinitionController;
 import com.dayswideawake.webrobot.lookupdefinition.frontend.model.LookupDefinitionDetails;
-import com.dayswideawake.webrobot.lookupdefinition.frontend.model.LookupDefinitionPostRequest;
-import com.dayswideawake.webrobot.lookupdefinition.frontend.model.LookupDefinitionPostResponse;
+import com.dayswideawake.webrobot.lookupdefinition.frontend.model.SelectorDetails;
+import com.dayswideawake.webrobot.lookupdefinition.frontend.model.AddLookupDefinitionRequest;
+import com.dayswideawake.webrobot.lookupdefinition.frontend.model.AddLookupDefinitionResponse;
+import com.dayswideawake.webrobot.lookupdefinition.frontend.model.ViewLookupDefinitionResponse;
 
 @Component
 public class LookupDefinitionViewDomainTransformer {
 
     private SiteViewDomainTransformer sitePostRequestDomainTransformer;
-    private SelectorViewDomainTransformer selectorPostRequestDomainTransformer;
+    private SelectorViewDomainTransformer selectorViewDomainTransformer;
 
     @Autowired
     public LookupDefinitionViewDomainTransformer(SiteViewDomainTransformer sitePostRequestDomainTransformer, SelectorViewDomainTransformer selectorPostRequestDomainTransformer) {
         super();
         this.sitePostRequestDomainTransformer = sitePostRequestDomainTransformer;
-        this.selectorPostRequestDomainTransformer = selectorPostRequestDomainTransformer;
+        this.selectorViewDomainTransformer = selectorPostRequestDomainTransformer;
     }
 
-    public LookupDefinition postRequestToDomain(LookupDefinitionPostRequest addLookupDefinitionRequest) {
+    public LookupDefinition postRequestToDomain(AddLookupDefinitionRequest addLookupDefinitionRequest) {
         Site site = sitePostRequestDomainTransformer.postRequestToDomain(addLookupDefinitionRequest.getSite());
-        Selector selector = selectorPostRequestDomainTransformer.postRequestToDomain(addLookupDefinitionRequest.getSelector());
+        Selector selector = selectorViewDomainTransformer.addRequestToDomain(addLookupDefinitionRequest.getSelector());
         Long intervalInSeconds = addLookupDefinitionRequest.getIntervalInSeconds();
         LookupDefinition result = new LookupDefinition(site, selector, intervalInSeconds);
         if (addLookupDefinitionRequest.getAccountId() != null) {
@@ -36,16 +38,25 @@ public class LookupDefinitionViewDomainTransformer {
         return result;
     }
 
-    public LookupDefinitionPostResponse domainToPostResponse(LookupDefinition lookupDefinition) {
-        LookupDefinitionPostResponse response = new LookupDefinitionPostResponse();
+    public AddLookupDefinitionResponse domainToPostResponse(LookupDefinition lookupDefinition) {
+        LookupDefinitionDetails responseContent = domainToDetails(lookupDefinition);
+        AddLookupDefinitionResponse response = new AddLookupDefinitionResponse(responseContent);
         response.add(linkTo(methodOn(ViewLookupDefinitionController.class).view(lookupDefinition.getId())).withSelfRel());
         return response;
     }
     
-    public LookupDefinitionDetails domainToDetails(LookupDefinition lookupDefinition){
-        LookupDefinitionDetails details = new LookupDefinitionDetails();
-        details.add(linkTo(methodOn(ViewLookupDefinitionController.class).view(lookupDefinition.getId())).withSelfRel());
-        return details;
+    public ViewLookupDefinitionResponse domainToViewResponse(LookupDefinition lookupDefinition){
+        ViewLookupDefinitionResponse response = new ViewLookupDefinitionResponse(domainToDetails(lookupDefinition));
+        response.add(linkTo(methodOn(ViewLookupDefinitionController.class).view(lookupDefinition.getId())).withSelfRel());
+        return response;
+    }
+    
+    public LookupDefinitionDetails domainToDetails(LookupDefinition domain){
+        Long id = domain.getId();
+        Long accountId = domain.getAccountId();
+        Long intervalInSeconds = domain.getIntervalInSeconds();
+        SelectorDetails selector = selectorViewDomainTransformer.domainToDetails(domain.getSelector());
+        return new LookupDefinitionDetails(id, accountId, intervalInSeconds, selector);
     }
 
 }

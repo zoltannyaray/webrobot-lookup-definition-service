@@ -1,7 +1,7 @@
+server:
+  port: 9000
 #server:
-#  port: 9000
-#server:
-#  context-path: /lookup-definition-service
+#  context-path: /webrobot-lookup-definition-service
 spring:
 #  config:
 #    name: lookup-definition-service
