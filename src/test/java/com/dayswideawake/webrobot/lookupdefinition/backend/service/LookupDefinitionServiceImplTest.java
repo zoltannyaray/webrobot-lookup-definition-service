@@ -14,6 +14,7 @@ import org.testng.annotations.Test;
 
 import com.dayswideawake.webrobot.lookupdefinition.backend.domain.LookupDefinition;
 import com.dayswideawake.webrobot.lookupdefinition.backend.domain.Selector;
+import com.dayswideawake.webrobot.lookupdefinition.backend.domain.SelectorCss;
 import com.dayswideawake.webrobot.lookupdefinition.backend.domain.Site;
 
 @SpringBootTest
@@ -27,7 +28,7 @@ public class LookupDefinitionServiceImplTest extends AbstractTestNGSpringContext
         Long accountId = 1L;
         URL url = UriComponentsBuilder.fromUriString("http://example.com").build().toUri().toURL();
         Site site = new Site(url);
-        Selector selector = new Selector();
+        Selector selector = new SelectorCss("body>h1");
         Long intervalInSeconds = 10L;
         LookupDefinition lookupDefintion = new LookupDefinition(site, selector, intervalInSeconds);
         lookupDefinitionService.addLookupDefinition(lookupDefintion);

@@ -36,7 +36,6 @@ public class AddLookupDefinitionController {
         AddLookupDefinitionResponse response = lookupDefinitionViewDomainTransformer.domainToPostResponse(lookupDefinition);
         URI createdResourceUri = UriComponentsBuilder.fromPath(response.getLink(Link.REL_SELF).getHref()).build().toUri();
         return ResponseEntity.created(createdResourceUri).body(response);
-        
     }
 
 }

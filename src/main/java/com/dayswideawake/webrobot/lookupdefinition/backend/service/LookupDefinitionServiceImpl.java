@@ -23,17 +23,14 @@ public class LookupDefinitionServiceImpl implements LookupDefinitionService {
 
     @Autowired
     public LookupDefinitionServiceImpl(LookupDefinitionRepository repository, LookupDefinitionDomainEntityTransformer domainEntityTransformer) {
-        super();
         this.repository = repository;
         this.domainEntityTransformer = domainEntityTransformer;
     }
 
     @Override
     public LookupDefinition addLookupDefinition(LookupDefinition lookupDefinition) {
-        logger.log(Level.INFO, "CALL addLookupDefinition");
         LookupDefinitionEntity entity = domainEntityTransformer.domainToEntity(lookupDefinition);
         entity = repository.save(entity);
-        logger.log(Level.INFO, "Saved Entity ID: " + entity.getId());
         return domainEntityTransformer.entityToDomain(entity);
     }
 
