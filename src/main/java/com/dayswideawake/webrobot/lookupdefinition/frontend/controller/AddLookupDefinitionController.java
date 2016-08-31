@@ -16,6 +16,7 @@ import com.dayswideawake.webrobot.lookupdefinition.backend.service.LookupDefinit
 import com.dayswideawake.webrobot.lookupdefinition.frontend.model.AddLookupDefinitionRequest;
 import com.dayswideawake.webrobot.lookupdefinition.frontend.model.AddLookupDefinitionResponse;
 import com.dayswideawake.webrobot.lookupdefinition.frontend.transformer.LookupDefinitionViewDomainTransformer;
+import com.dayswideawake.webrobot.lookupdefinition.frontend.url.LookupDefinitionUrls;
 
 @RestController
 public class AddLookupDefinitionController {
@@ -29,7 +30,7 @@ public class AddLookupDefinitionController {
         this.lookupDefinitionViewDomainTransformer = lookupDefinitionViewDomainTransformer;
     }
 
-    @RequestMapping(path = "/lookup-definitions", method = RequestMethod.POST)
+    @RequestMapping(path = LookupDefinitionUrls.BASE_URL, method = RequestMethod.POST)
     public ResponseEntity<AddLookupDefinitionResponse> addLookupDefinition(@RequestBody AddLookupDefinitionRequest request) {
         LookupDefinition lookupDefinition = lookupDefinitionViewDomainTransformer.postRequestToDomain(request);
         lookupDefinition = lookupDefinitionService.addLookupDefinition(lookupDefinition);
