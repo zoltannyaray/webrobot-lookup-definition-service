@@ -1,21 +1,21 @@
 package com.dayswideawake.webrobot.lookupdefinition.frontend.controller;
 
+import static org.hamcrest.CoreMatchers.is;
+import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.post;
+import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.content;
+import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.jsonPath;
+import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.status;
+
 import java.io.IOException;
-import java.nio.charset.Charset;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
-import org.springframework.hateoas.MediaTypes;
 import org.springframework.http.MediaType;
 import org.springframework.http.converter.json.MappingJackson2HttpMessageConverter;
 import org.springframework.mock.http.MockHttpOutputMessage;
 import org.springframework.test.context.testng.AbstractTestNGSpringContextTests;
 import org.springframework.test.web.servlet.MockMvc;
 import org.springframework.test.web.servlet.RequestBuilder;
-
-import static org.hamcrest.CoreMatchers.is;
-import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.*;
-import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.*;
 import org.springframework.test.web.servlet.setup.MockMvcBuilders;
 import org.springframework.web.context.WebApplicationContext;
 import org.testng.annotations.BeforeClass;
@@ -35,7 +35,6 @@ public class AddLookupDefinitionControllerTest extends AbstractTestNGSpringConte
 	@Autowired
 	private MappingJackson2HttpMessageConverter mappingJackson2HttpMessageConverter;
 	private MediaType jsonContentType = MediaType.APPLICATION_JSON_UTF8;
-	private MediaType halJsonContentType = new MediaType(MediaTypes.HAL_JSON, Charset.forName("utf-8"));
 	private MockMvc mockMvc;
 
 	@BeforeClass
@@ -47,10 +46,10 @@ public class AddLookupDefinitionControllerTest extends AbstractTestNGSpringConte
 	public void addLookupDefinitionShouldWork() throws Exception {
 		AddLookupDefinitionRequest request = createAddLookupDefinitionRequest();
 		String jsonRequest = toJson(request);
-		RequestBuilder requestBuilder = post(LookupDefinitionUrls.BASE_URL).content(jsonRequest).contentType(jsonContentType);
+		RequestBuilder requestBuilder = post(LookupDefinitionUrls.BASE_URL).content(jsonRequest).contentType(jsonContentType).accept(jsonContentType);
 		mockMvc.perform(requestBuilder)
 				.andExpect(status().isCreated())
-				.andExpect(content().contentType(halJsonContentType))
+				.andExpect(content().contentType(jsonContentType))
 				.andExpect(jsonPath("$.content.accountId", is(request.getAccountId().intValue())))
 				.andExpect(jsonPath("$.content.intervalInSeconds", is(request.getIntervalInSeconds().intValue())))
 				.andExpect(jsonPath("$.content.selector.selector", is(request.getSelector().getSelector())))

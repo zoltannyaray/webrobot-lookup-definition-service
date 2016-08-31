@@ -13,6 +13,7 @@ import com.dayswideawake.webrobot.lookupdefinition.backend.service.LookupDefinit
 import com.dayswideawake.webrobot.lookupdefinition.frontend.exception.LookupDefinitionNotFoundException;
 import com.dayswideawake.webrobot.lookupdefinition.frontend.model.ViewLookupDefinitionResponse;
 import com.dayswideawake.webrobot.lookupdefinition.frontend.transformer.LookupDefinitionViewDomainTransformer;
+import com.dayswideawake.webrobot.lookupdefinition.frontend.url.LookupDefinitionUrls;
 
 @RestController
 public class ViewLookupDefinitionController {
@@ -26,7 +27,7 @@ public class ViewLookupDefinitionController {
         this.lookupDefinitionViewDomainTransformer = lookupDefinitionViewDomainTransformer;
     }
 
-    @RequestMapping(path = "/lookup-definitions/{id}", method = RequestMethod.GET)
+    @RequestMapping(path = LookupDefinitionUrls.BASE_URL + "/{id}", method = RequestMethod.GET)
     public ViewLookupDefinitionResponse view(@PathVariable Long id) {
         Optional<LookupDefinition> lookupDefinition = lookupDefinitionService.getLookupDefinitionById(id);
         if (!lookupDefinition.isPresent()) {
