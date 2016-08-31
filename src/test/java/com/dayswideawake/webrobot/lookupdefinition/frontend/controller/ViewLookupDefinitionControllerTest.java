@@ -63,13 +63,13 @@ public class ViewLookupDefinitionControllerTest extends AbstractTestNGSpringCont
 		
 	}
 	
-	private String getSelectorJsonText(Selector selectorDomain){
+	private String getSelectorJsonText(Selector selector){
 		String result = null;
-		if(selectorDomain instanceof SelectorCss){
-			result = ((SelectorCss) selectorDomain).getSelector();
+		if(selector instanceof SelectorCss){
+			result = ((SelectorCss) selector).getSelector();
 		}
-		else if(selectorDomain instanceof SelectorXPath){
-			result = ((SelectorXPath) selectorDomain).getSelector();
+		else if(selector instanceof SelectorXPath){
+			result = ((SelectorXPath) selector).getSelector();
 		}
 		return result;
 	}
@@ -90,7 +90,7 @@ public class ViewLookupDefinitionControllerTest extends AbstractTestNGSpringCont
 		Site site = new Site(new URL("http://example.com"));
 		Selector selector = new SelectorCss("body");
 		Long intervalInSeconds = 10L;
-		return new LookupDefinition(accountId, site, selector, intervalInSeconds);
+		return new LookupDefinition.Builder(site, selector, intervalInSeconds).accountId(accountId).build();
 	}
 
 }

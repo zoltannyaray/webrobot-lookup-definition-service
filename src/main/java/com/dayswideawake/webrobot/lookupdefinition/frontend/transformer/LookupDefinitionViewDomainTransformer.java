@@ -32,11 +32,9 @@ public class LookupDefinitionViewDomainTransformer {
         Site site = siteViewDomainTransformer.postRequestToDomain(addLookupDefinitionRequest.getSite());
         Selector selector = selectorViewDomainTransformer.addRequestToDomain(addLookupDefinitionRequest.getSelector());
         Long intervalInSeconds = addLookupDefinitionRequest.getIntervalInSeconds();
-        LookupDefinition result = new LookupDefinition(site, selector, intervalInSeconds);
-        if (addLookupDefinitionRequest.getAccountId() != null) {
-            result.setAccountId(addLookupDefinitionRequest.getAccountId());
-        }
-        return result;
+        return new LookupDefinition.Builder(site, selector, intervalInSeconds)
+        		.accountId(addLookupDefinitionRequest.getAccountId())
+        		.build();
     }
 
     public AddLookupDefinitionResponse domainToPostResponse(LookupDefinition lookupDefinition) {

@@ -4,74 +4,90 @@ import java.util.Date;
 
 public class LookupDefinition {
 
-    private Long id;
-    private Long accountId;
-    private Site site;
-    private Selector selector;
-    private Long intervalInSeconds;
-    private Date lastLookupAt;
+	private Long id;
+	private Long accountId;
+	private Site site;
+	private Selector selector;
+	private Long intervalInSeconds;
+	private Date lastLookupAt;
 
-    public LookupDefinition(Site site, Selector selector, Long intervalInSeconds) {
-        super();
-        this.site = site;
-        this.selector = selector;
-        this.intervalInSeconds = intervalInSeconds;
-    }
+	private LookupDefinition(Builder builder) {
+		id = builder.id;
+		accountId = builder.accountId;
+		site = builder.site;
+		selector = builder.selector;
+		intervalInSeconds = builder.intervalInSeconds;
+		lastLookupAt = builder.lastLookupAt;
+	}
 
-    public LookupDefinition(Long accountId, Site site, Selector selector, Long intervalInSeconds) {
-        super();
-        this.accountId = accountId;
-        this.site = site;
-        this.selector = selector;
-        this.intervalInSeconds = intervalInSeconds;
-    }
+	public Long getId() {
+		return id;
+	}
 
-    public void setId(Long id) {
-        this.id = id;
-    }
+	public Long getAccountId() {
+		return accountId;
+	}
 
-    public Long getId() {
-        return id;
-    }
+	public Site getSite() {
+		return site;
+	}
 
-    public Long getAccountId() {
-        return accountId;
-    }
+	public Selector getSelector() {
+		return selector;
+	}
 
-    public void setAccountId(Long accountId) {
-        this.accountId = accountId;
-    }
+	public void setSelector(Selector selector) {
+		this.selector = selector;
+	}
 
-    public Site getSite() {
-        return site;
-    }
+	public Long getIntervalInSeconds() {
+		return intervalInSeconds;
+	}
 
-    public void setSite(Site site) {
-        this.site = site;
-    }
+	public Date getLastLookupAt() {
+		return lastLookupAt;
+	}
 
-    public Selector getSelector() {
-        return selector;
-    }
+	public static class Builder {
+		private Long id;
+		private Long accountId;
+		private final Site site;
+		private final Selector selector;
+		private final Long intervalInSeconds;
+		private Date lastLookupAt;
 
-    public void setSelector(Selector selector) {
-        this.selector = selector;
-    }
+		public Builder(Site site, Selector selector, Long intervalInSeconds) {
+			this.site = site;
+			this.selector = selector;
+			this.intervalInSeconds = intervalInSeconds;
+		}
 
-    public Long getIntervalInSeconds() {
-        return intervalInSeconds;
-    }
+		public Builder id(Long id) {
+			this.id = id;
+			return this;
+		}
 
-    public void setIntervalInSeconds(Long intervalInSeconds) {
-        this.intervalInSeconds = intervalInSeconds;
-    }
+		public Builder accountId(Long accountId) {
+			this.accountId = accountId;
+			return this;
+		}
 
-    public Date getLastLookupAt() {
-        return lastLookupAt;
-    }
+		public Builder lastLookupAt(Date lastLookupAt) {
+			this.lastLookupAt = lastLookupAt;
+			return this;
+		}
 
-    public void setLastLookupAt(Date lastLookupAt) {
-        this.lastLookupAt = lastLookupAt;
-    }
+		public Builder lastLookupAt(Long lastLookupAt) {
+			if (lastLookupAt != null) {
+				this.lastLookupAt = new Date(lastLookupAt);
+			}
+			return this;
+		}
+
+		public LookupDefinition build() {
+			return new LookupDefinition(this);
+		}
+
+	}
 
 }

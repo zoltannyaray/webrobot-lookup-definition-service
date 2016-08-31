@@ -30,7 +30,7 @@ public class LookupDefinitionServiceImplTest extends AbstractTestNGSpringContext
         Site site = new Site(url);
         Selector selector = new SelectorCss("body>h1");
         Long intervalInSeconds = 10L;
-        LookupDefinition lookupDefintion = new LookupDefinition(site, selector, intervalInSeconds);
+        LookupDefinition lookupDefintion = new LookupDefinition.Builder(site, selector, intervalInSeconds).build();
         lookupDefinitionService.addLookupDefinition(lookupDefintion);
         List<LookupDefinition> lookupDefintions = lookupDefinitionService.getLookupDefinitionsByAccountId(accountId);
         assertEquals(1, lookupDefintions.size());
