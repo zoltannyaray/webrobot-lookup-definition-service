@@ -42,7 +42,6 @@ public class ViewLookupDefinitionControllerTest extends AbstractTestNGSpringCont
 	private MediaType jsonContentType = MediaType.APPLICATION_JSON_UTF8;
 	private MockMvc mockMvc;
 	private LookupDefinition testLookupDefinition;
-	
 
 	@BeforeClass
 	public void setup() throws MalformedURLException {
@@ -54,7 +53,7 @@ public class ViewLookupDefinitionControllerTest extends AbstractTestNGSpringCont
 	public void viewLookupDefinitionShouldWork() throws Exception {
 		String resourceUrl = LookupDefinitionUrls.BASE_URL + "/" + testLookupDefinition.getId();
 		RequestBuilder requestBuilder = get(resourceUrl).accept(jsonContentType);
-		Link expectedSelfLink = linkTo(methodOn(ViewLookupDefinitionController.class).view(testLookupDefinition.getId())).withSelfRel();
+		Link expectedSelfLink = linkTo(methodOn(ViewLookupDefinitionController.class).handle(testLookupDefinition.getId())).withSelfRel();
 		mockMvc.perform(requestBuilder)
 				.andExpect(status().isOk())
 				.andExpect(content().contentType(jsonContentType))

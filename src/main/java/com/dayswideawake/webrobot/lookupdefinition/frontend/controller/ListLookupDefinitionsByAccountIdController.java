@@ -18,21 +18,21 @@ import com.dayswideawake.webrobot.lookupdefinition.frontend.url.LookupDefinition
 
 @RestController
 @RequestMapping(path = LookupDefinitionUrls.LIST_BY_ACCOUNT_ID)
-public class ListLookupDefinitionsController {
+public class ListLookupDefinitionsByAccountIdController {
 
 	private LookupDefinitionService lookupDefinitionService;
 	private PagedResourcesAssembler<LookupDefinition> pagedResourcesAssembler;
 	private LookupDefinitionResourceAssembler lookupDefinitionResourceAssembler;
 
 	@Autowired
-	public ListLookupDefinitionsController(LookupDefinitionService lookupDefinitionService, PagedResourcesAssembler<LookupDefinition> pagedResourcesAssembler, LookupDefinitionResourceAssembler lookupDefinitionResourceAssembler) {
+	public ListLookupDefinitionsByAccountIdController(LookupDefinitionService lookupDefinitionService, PagedResourcesAssembler<LookupDefinition> pagedResourcesAssembler, LookupDefinitionResourceAssembler lookupDefinitionResourceAssembler) {
 		this.lookupDefinitionService = lookupDefinitionService;
 		this.pagedResourcesAssembler = pagedResourcesAssembler;
 		this.lookupDefinitionResourceAssembler = lookupDefinitionResourceAssembler;
 	}
 
 	@RequestMapping(method = RequestMethod.GET)
-	public PagedResources<LookupDefinitionResource> list(@PathVariable Long accountId, Pageable pageable) {
+	public PagedResources<LookupDefinitionResource> handle(@PathVariable Long accountId, Pageable pageable) {
 		Page<LookupDefinition> lookupDefinitions = lookupDefinitionService.getLookupDefinitionsByAccountId(accountId, pageable);
 		return pagedResourcesAssembler.toResource(lookupDefinitions, lookupDefinitionResourceAssembler);
 	}

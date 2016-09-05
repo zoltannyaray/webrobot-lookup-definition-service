@@ -30,7 +30,7 @@ public class ViewLookupDefinitionController {
 	}
 
     @RequestMapping(path = "/{id}", method = RequestMethod.GET)
-    public LookupDefinitionResource view(@PathVariable Long id) {
+    public LookupDefinitionResource handle(@PathVariable Long id) {
         Optional<LookupDefinition> lookupDefinition = lookupDefinitionService.getLookupDefinitionById(id);
         if (!lookupDefinition.isPresent()) {
             throw new LookupDefinitionNotFoundException(id);

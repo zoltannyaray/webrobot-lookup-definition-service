@@ -35,7 +35,7 @@ public class AddLookupDefinitionController {
 	}
 
 	@RequestMapping(method = RequestMethod.POST)
-	public ResponseEntity<LookupDefinitionResource> addLookupDefinition(@RequestBody AddLookupDefinitionRequest request) {
+	public ResponseEntity<LookupDefinitionResource> handle(@RequestBody AddLookupDefinitionRequest request) {
 		LookupDefinition lookupDefinition = lookupDefinitionViewDomainTransformer.postRequestToDomain(request);
 		lookupDefinition = lookupDefinitionService.addLookupDefinition(lookupDefinition);
 		LookupDefinitionResource lookupDefinitionResource = lookupDefinitionResourceAssembler.toResource(lookupDefinition);
