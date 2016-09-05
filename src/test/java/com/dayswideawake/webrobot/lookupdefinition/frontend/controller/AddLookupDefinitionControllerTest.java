@@ -50,11 +50,11 @@ public class AddLookupDefinitionControllerTest extends AbstractTestNGSpringConte
 		mockMvc.perform(requestBuilder)
 				.andExpect(status().isCreated())
 				.andExpect(content().contentType(jsonContentType))
-				.andExpect(jsonPath("$.content.accountId", is(request.getAccountId().intValue())))
-				.andExpect(jsonPath("$.content.intervalInSeconds", is(request.getIntervalInSeconds().intValue())))
-				.andExpect(jsonPath("$.content.selector.selector", is(request.getSelector().getSelector())))
-				.andExpect(jsonPath("$.content.selector.selectorType", is(request.getSelector().getSelectorType().name())))
-				.andExpect(jsonPath("$.content.site.url", is(request.getSite().getUrl())));
+				.andExpect(jsonPath("$.accountId", is(request.getAccountId().intValue())))
+				.andExpect(jsonPath("$.intervalInSeconds", is(request.getIntervalInSeconds().intValue())))
+				.andExpect(jsonPath("$.selector.selector", is(request.getSelector().getSelector())))
+				.andExpect(jsonPath("$.selector.selectorType", is(request.getSelector().getSelectorType().name())))
+				.andExpect(jsonPath("$.site.url", is(request.getSite().getUrl())));
 	}
 
 	private AddLookupDefinitionRequest createAddLookupDefinitionRequest() {

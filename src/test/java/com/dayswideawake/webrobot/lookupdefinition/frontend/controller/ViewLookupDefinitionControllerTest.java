@@ -1,6 +1,9 @@
 package com.dayswideawake.webrobot.lookupdefinition.frontend.controller;
 
 import static org.hamcrest.CoreMatchers.is;
+import static org.mockito.Mockito.mock;
+import static org.springframework.hateoas.mvc.ControllerLinkBuilder.linkTo;
+import static org.springframework.hateoas.mvc.ControllerLinkBuilder.methodOn;
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.get;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.content;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.jsonPath;
@@ -11,6 +14,7 @@ import java.net.URL;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
+import org.springframework.hateoas.Link;
 import org.springframework.http.MediaType;
 import org.springframework.test.context.testng.AbstractTestNGSpringContextTests;
 import org.springframework.test.web.servlet.MockMvc;
@@ -38,29 +42,38 @@ public class ViewLookupDefinitionControllerTest extends AbstractTestNGSpringCont
 	private LookupDefinitionService lookupDefinitionService;
 	private MediaType jsonContentType = MediaType.APPLICATION_JSON_UTF8;
 	private MockMvc mockMvc;
-	private LookupDefinition lookupDefinition;
+	private LookupDefinition testLookupDefinition;
 	
 
 	@BeforeClass
 	public void setup() throws MalformedURLException {
 		mockMvc = MockMvcBuilders.webAppContextSetup(webApplicationContext).build();
-		lookupDefinition = lookupDefinitionService.addLookupDefinition(getNewLookupDefinition());
+		testLookupDefinition = lookupDefinitionService.addLookupDefinition(getNewLookupDefinition());
 	}
 
 	@Test
 	public void viewLookupDefinitionShouldWork() throws Exception {
-		String resourceUrl = LookupDefinitionUrls.BASE_URL + "/" + lookupDefinition.getId();
+		String resourceUrl = LookupDefinitionUrls.BASE_URL + "/" + testLookupDefinition.getId();
 		RequestBuilder requestBuilder = get(resourceUrl).accept(jsonContentType);
+		Link expectedSelfLink = linkTo(methodOn(ViewLookupDefinitionController.class).view(testLookupDefinition.getId())).withSelfRel();
 		mockMvc.perform(requestBuilder)
 				.andExpect(status().isOk())
 				.andExpect(content().contentType(jsonContentType))
-				.andExpect(jsonPath("$.content.id", is(lookupDefinition.getId().intValue())))
-				.andExpect(jsonPath("$.content.accountId", is(lookupDefinition.getAccountId().intValue())))
-				.andExpect(jsonPath("$.content.intervalInSeconds", is(lookupDefinition.getIntervalInSeconds().intValue())))
-				.andExpect(jsonPath("$.content.selector.selector", is(getSelectorJsonText(lookupDefinition.getSelector()))))
-				.andExpect(jsonPath("$.content.selector.selectorType", is(getSelectorTypeJsonText(lookupDefinition.getSelector()))))
-				.andExpect(jsonPath("$.content.site.url", is(lookupDefinition.getSite().getUrl().toString())));
-		
+				.andExpect(jsonPath("$.id", is(testLookupDefinition.getId().intValue())))
+				.andExpect(jsonPath("$.accountId", is(testLookupDefinition.getAccountId().intValue())))
+				.andExpect(jsonPath("$.intervalInSeconds", is(testLookupDefinition.getIntervalInSeconds().intValue())))
+				.andExpect(jsonPath("$.selector.selector", is(getSelectorJsonText(testLookupDefinition.getSelector()))))
+				.andExpect(jsonPath("$.selector.selectorType", is(getSelectorTypeJsonText(testLookupDefinition.getSelector()))))
+				.andExpect(jsonPath("$.site.url", is(testLookupDefinition.getSite().getUrl().toString())))
+				.andExpect(jsonPath("$._links.self.href", is(expectedSelfLink.getHref())));
+	}
+	
+	@Test
+	public void viewLookupDefinitionShouldReturn404OnNotExistingResource() throws Exception{
+		String resourceUrl = LookupDefinitionUrls.BASE_URL + "/1000";
+		RequestBuilder requestBuilder = get(resourceUrl).accept(jsonContentType);
+		mockMvc.perform(requestBuilder)
+			.andExpect(status().isNotFound());
 	}
 	
 	private String getSelectorJsonText(Selector selector){

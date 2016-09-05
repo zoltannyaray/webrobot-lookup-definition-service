@@ -1,18 +1,16 @@
 package com.dayswideawake.webrobot.lookupdefinition.frontend.model;
 
-import org.springframework.hateoas.ResourceSupport;
+import org.springframework.hateoas.Link;
+import org.springframework.hateoas.Resource;
 
-public class ViewLookupDefinitionResponse extends ResourceSupport {
+public class ViewLookupDefinitionResponse extends Resource<LookupDefinitionDetails> {
 
-    private LookupDefinitionDetails content;
+	public ViewLookupDefinitionResponse(LookupDefinitionDetails content, Link... links) {
+		super(content, links);
+	}
 
-    public ViewLookupDefinitionResponse(LookupDefinitionDetails content) {
-        this.content = content;
-    }
-
-    public LookupDefinitionDetails getContent() {
-        return content;
-    }
-    
-    
+	public ViewLookupDefinitionResponse(LookupDefinitionDetails content, Iterable<Link> links) {
+		super(content, links);
+	}
+  
 }

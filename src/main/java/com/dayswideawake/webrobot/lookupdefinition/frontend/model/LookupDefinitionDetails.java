@@ -1,5 +1,7 @@
 package com.dayswideawake.webrobot.lookupdefinition.frontend.model;
 
+import org.springframework.hateoas.Resource;
+
 import com.fasterxml.jackson.annotation.JsonCreator;
 
 public class LookupDefinitionDetails {
