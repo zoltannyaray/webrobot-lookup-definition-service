@@ -7,6 +7,8 @@ import java.util.logging.Logger;
 import java.util.stream.Collectors;
 
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
 
 import com.dayswideawake.webrobot.lookupdefinition.backend.domain.LookupDefinition;
@@ -35,12 +37,9 @@ public class LookupDefinitionServiceImpl implements LookupDefinitionService {
     }
 
     @Override
-    public List<LookupDefinition> getLookupDefinitionsByAccountId(Long accountId) {
-        List<LookupDefinitionEntity> entities = repository.findAll();
-        return entities
-                .stream()
-                .map(entity -> domainEntityTransformer.entityToDomain(entity))
-                .collect(Collectors.toList());
+    public Page<LookupDefinition> getLookupDefinitionsByAccountId(Long accountId, Pageable pageable) {
+        Page<LookupDefinitionEntity> entityPage = repository.findByAccountId(accountId, pageable);
+        return entityPage.map(domainEntityTransformer);
     }
 
     @Override

@@ -14,29 +14,33 @@ import org.springframework.web.util.UriComponentsBuilder;
 import com.dayswideawake.webrobot.lookupdefinition.backend.domain.LookupDefinition;
 import com.dayswideawake.webrobot.lookupdefinition.backend.service.LookupDefinitionService;
 import com.dayswideawake.webrobot.lookupdefinition.frontend.model.AddLookupDefinitionRequest;
-import com.dayswideawake.webrobot.lookupdefinition.frontend.model.AddLookupDefinitionResponse;
+import com.dayswideawake.webrobot.lookupdefinition.frontend.model.LookupDefinitionResource;
+import com.dayswideawake.webrobot.lookupdefinition.frontend.transformer.LookupDefinitionResourceAssembler;
 import com.dayswideawake.webrobot.lookupdefinition.frontend.transformer.LookupDefinitionViewDomainTransformer;
 import com.dayswideawake.webrobot.lookupdefinition.frontend.url.LookupDefinitionUrls;
 
 @RestController
+@RequestMapping(path = LookupDefinitionUrls.BASE_URL)
 public class AddLookupDefinitionController {
 
-    private LookupDefinitionService lookupDefinitionService;
-    private LookupDefinitionViewDomainTransformer lookupDefinitionViewDomainTransformer;
+	private LookupDefinitionService lookupDefinitionService;
+	private LookupDefinitionViewDomainTransformer lookupDefinitionViewDomainTransformer;
+	private LookupDefinitionResourceAssembler lookupDefinitionResourceAssembler;
 
-    @Autowired
-    public AddLookupDefinitionController(LookupDefinitionService lookupDefinitionService, LookupDefinitionViewDomainTransformer lookupDefinitionViewDomainTransformer) {
-        this.lookupDefinitionService = lookupDefinitionService;
-        this.lookupDefinitionViewDomainTransformer = lookupDefinitionViewDomainTransformer;
-    }
+	@Autowired
+	public AddLookupDefinitionController(LookupDefinitionService lookupDefinitionService, LookupDefinitionViewDomainTransformer lookupDefinitionViewDomainTransformer, LookupDefinitionResourceAssembler lookupDefinitionResourceAssembler) {
+		this.lookupDefinitionService = lookupDefinitionService;
+		this.lookupDefinitionViewDomainTransformer = lookupDefinitionViewDomainTransformer;
+		this.lookupDefinitionResourceAssembler = lookupDefinitionResourceAssembler;
+	}
 
-    @RequestMapping(path = LookupDefinitionUrls.BASE_URL, method = RequestMethod.POST)
-    public ResponseEntity<AddLookupDefinitionResponse> addLookupDefinition(@RequestBody AddLookupDefinitionRequest request) {
-        LookupDefinition lookupDefinition = lookupDefinitionViewDomainTransformer.postRequestToDomain(request);
-        lookupDefinition = lookupDefinitionService.addLookupDefinition(lookupDefinition);
-        AddLookupDefinitionResponse response = lookupDefinitionViewDomainTransformer.domainToPostResponse(lookupDefinition);
-        URI createdResourceUri = UriComponentsBuilder.fromPath(response.getLink(Link.REL_SELF).getHref()).build().toUri();
-        return ResponseEntity.created(createdResourceUri).body(response);
-    }
+	@RequestMapping(method = RequestMethod.POST)
+	public ResponseEntity<LookupDefinitionResource> addLookupDefinition(@RequestBody AddLookupDefinitionRequest request) {
+		LookupDefinition lookupDefinition = lookupDefinitionViewDomainTransformer.postRequestToDomain(request);
+		lookupDefinition = lookupDefinitionService.addLookupDefinition(lookupDefinition);
+		LookupDefinitionResource lookupDefinitionResource = lookupDefinitionResourceAssembler.toResource(lookupDefinition);
+		URI createdResourceUri = UriComponentsBuilder.fromPath(lookupDefinitionResource.getLink(Link.REL_SELF).getHref()).build().toUri();
+		return ResponseEntity.created(createdResourceUri).body(lookupDefinitionResource);
+	}
 
 }

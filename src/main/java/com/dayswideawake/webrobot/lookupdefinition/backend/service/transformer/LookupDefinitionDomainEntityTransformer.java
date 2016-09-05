@@ -1,6 +1,7 @@
 package com.dayswideawake.webrobot.lookupdefinition.backend.service.transformer;
 
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.core.convert.converter.Converter;
 import org.springframework.stereotype.Component;
 
 import com.dayswideawake.webrobot.lookupdefinition.backend.domain.LookupDefinition;
@@ -11,7 +12,7 @@ import com.dayswideawake.webrobot.lookupdefinition.backend.repository.entity.Sel
 import com.dayswideawake.webrobot.lookupdefinition.backend.repository.entity.SiteEntity;
 
 @Component
-public class LookupDefinitionDomainEntityTransformer {
+public class LookupDefinitionDomainEntityTransformer implements Converter<LookupDefinitionEntity, LookupDefinition>{
 
 	private SiteDomainEntityTransformer siteDomainEntityTransformer;
 	private SelectorDomainEntityTransformer selectorDomainEntityTransformer;
@@ -45,6 +46,11 @@ public class LookupDefinitionDomainEntityTransformer {
 				.accountId(lookupDefinitionEntity.getAccountId())
 				.lastLookupAt(lookupDefinitionEntity.getLastLookupAt())
 				.build();
+	}
+
+	@Override
+	public LookupDefinition convert(LookupDefinitionEntity source) {
+		return entityToDomain(source);
 	}
 
 }

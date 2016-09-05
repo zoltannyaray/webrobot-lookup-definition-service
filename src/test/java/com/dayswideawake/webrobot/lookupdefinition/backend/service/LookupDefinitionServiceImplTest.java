@@ -4,10 +4,11 @@ import static org.testng.Assert.assertEquals;
 
 import java.net.MalformedURLException;
 import java.net.URL;
-import java.util.List;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.PageRequest;
 import org.springframework.test.context.testng.AbstractTestNGSpringContextTests;
 import org.springframework.web.util.UriComponentsBuilder;
 import org.testng.annotations.Test;
@@ -30,10 +31,10 @@ public class LookupDefinitionServiceImplTest extends AbstractTestNGSpringContext
         Site site = new Site(url);
         Selector selector = new SelectorCss("body>h1");
         Long intervalInSeconds = 10L;
-        LookupDefinition lookupDefintion = new LookupDefinition.Builder(site, selector, intervalInSeconds).build();
+        LookupDefinition lookupDefintion = new LookupDefinition.Builder(site, selector, intervalInSeconds).accountId(accountId).build();
         lookupDefinitionService.addLookupDefinition(lookupDefintion);
-        List<LookupDefinition> lookupDefintions = lookupDefinitionService.getLookupDefinitionsByAccountId(accountId);
-        assertEquals(1, lookupDefintions.size());
+        Page<LookupDefinition> lookupDefintions = lookupDefinitionService.getLookupDefinitionsByAccountId(accountId, new PageRequest(0, 1000));
+        assertEquals(lookupDefintions.getTotalElements(), 1);
     }
 
 }

@@ -1,7 +1,6 @@
 package com.dayswideawake.webrobot.lookupdefinition.frontend.controller;
 
 import static org.hamcrest.CoreMatchers.is;
-import static org.mockito.Mockito.mock;
 import static org.springframework.hateoas.mvc.ControllerLinkBuilder.linkTo;
 import static org.springframework.hateoas.mvc.ControllerLinkBuilder.methodOn;
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.get;
