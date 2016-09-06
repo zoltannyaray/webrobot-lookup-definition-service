@@ -23,27 +23,27 @@ import com.dayswideawake.webrobot.lookupdefinition.backend.repository.dao.Lookup
 @SpringBootTest
 public class LookupDefinitionServiceImplTest extends AbstractTestNGSpringContextTests {
 
-    @Autowired
-    private LookupDefinitionService lookupDefinitionService;
-    @Autowired
-    private LookupDefinitionRepository lookupDefinitionRepository;
+	@Autowired
+	private LookupDefinitionService lookupDefinitionService;
+	@Autowired
+	private LookupDefinitionRepository lookupDefinitionRepository;
 
-    @AfterClass
-	public void teardown(){
+	@AfterClass
+	public void teardown() {
 		lookupDefinitionRepository.deleteAll();
 	}
-    
-    @Test
-    public void shouldSaveAndGetLookupDefinition() throws MalformedURLException {
-        Long accountId = 1L;
-        URL url = UriComponentsBuilder.fromUriString("http://example.com").build().toUri().toURL();
-        Site site = new Site.Builder(url).build();
-        Selector selector = new SelectorCss("body>h1");
-        Long intervalInSeconds = 10L;
-        LookupDefinition lookupDefintion = new LookupDefinition.Builder(site, selector, intervalInSeconds).accountId(accountId).build();
-        lookupDefinitionService.addLookupDefinition(lookupDefintion);
-        Page<LookupDefinition> lookupDefintions = lookupDefinitionService.getLookupDefinitionsByAccountId(accountId, new PageRequest(0, 1000));
-        assertEquals(lookupDefintions.getTotalElements(), 1);
-    }
+
+	@Test
+	public void shouldSaveAndGetLookupDefinition() throws MalformedURLException {
+		Long accountId = 1L;
+		URL url = UriComponentsBuilder.fromUriString("http://example.com").build().toUri().toURL();
+		Site site = new Site.Builder(url).build();
+		Selector selector = new SelectorCss("body>h1");
+		Long intervalInSeconds = 10L;
+		LookupDefinition lookupDefintion = new LookupDefinition.Builder(site, selector, intervalInSeconds).accountId(accountId).build();
+		lookupDefinitionService.addLookupDefinition(lookupDefintion);
+		Page<LookupDefinition> lookupDefintions = lookupDefinitionService.getLookupDefinitionsByAccountId(accountId, new PageRequest(0, 1000));
+		assertEquals(lookupDefintions.getTotalElements(), 1);
+	}
 
 }

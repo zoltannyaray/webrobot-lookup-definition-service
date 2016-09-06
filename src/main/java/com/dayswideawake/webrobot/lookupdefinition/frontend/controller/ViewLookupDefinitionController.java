@@ -24,7 +24,6 @@ public class ViewLookupDefinitionController {
 
     @Autowired
     public ViewLookupDefinitionController(LookupDefinitionService lookupDefinitionService, LookupDefinitionResourceAssembler lookupDefinitionResourceAssembler) {
-		super();
 		this.lookupDefinitionService = lookupDefinitionService;
 		this.lookupDefinitionResourceAssembler = lookupDefinitionResourceAssembler;
 	}

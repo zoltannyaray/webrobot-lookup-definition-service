@@ -9,12 +9,12 @@ import com.dayswideawake.webrobot.lookupdefinition.backend.domain.LookupDefiniti
 
 public interface LookupDefinitionService {
 
-    Page<LookupDefinition> getLookupDefinitionsByAccountId(Long accountId, Pageable pageable);
+	Optional<LookupDefinition> getLookupDefinitionById(Long id);
 
-    LookupDefinition addLookupDefinition(LookupDefinition lookupDefinition);
-    
-    Optional<LookupDefinition> getLookupDefinitionById(Long id);
-    
-    
-    
+	LookupDefinition addLookupDefinition(LookupDefinition lookupDefinition);
+
+	Page<LookupDefinition> getLookupDefinitionsByAccountId(Long accountId, Pageable pageable);
+	
+	Page<LookupDefinition> getLookupDefinitionsForSchedule(Pageable pageable);
+
 }
