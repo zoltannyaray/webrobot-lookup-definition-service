@@ -107,7 +107,8 @@ public class ViewLookupDefinitionControllerTest extends AbstractTestNGSpringCont
 
 	private LookupDefinition getNewLookupDefinition() throws MalformedURLException {
 		Long accountId = 1L;
-		Site site = new Site(new URL("http://example.com"));
+		URL url = new URL("http://example.com");
+		Site site = new Site.Builder(url).build();
 		Selector selector = new SelectorCss("body");
 		Long intervalInSeconds = 10L;
 		return new LookupDefinition.Builder(site, selector, intervalInSeconds).accountId(accountId).build();

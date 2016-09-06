@@ -37,7 +37,7 @@ public class LookupDefinitionServiceImplTest extends AbstractTestNGSpringContext
     public void shouldSaveAndGetLookupDefinition() throws MalformedURLException {
         Long accountId = 1L;
         URL url = UriComponentsBuilder.fromUriString("http://example.com").build().toUri().toURL();
-        Site site = new Site(url);
+        Site site = new Site.Builder(url).build();
         Selector selector = new SelectorCss("body>h1");
         Long intervalInSeconds = 10L;
         LookupDefinition lookupDefintion = new LookupDefinition.Builder(site, selector, intervalInSeconds).accountId(accountId).build();

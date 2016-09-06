@@ -17,7 +17,7 @@ public class SiteDomainEntityTransformer {
 
     public Site entityToDomain(SiteEntity entity) {
         URL url = entity.getUrl();
-        return new Site(url);
+        return new Site.Builder(url).build();
     }
 
 }

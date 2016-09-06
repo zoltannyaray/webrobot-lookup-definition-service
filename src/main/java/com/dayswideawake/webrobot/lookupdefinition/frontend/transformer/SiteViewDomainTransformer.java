@@ -20,7 +20,7 @@ public class SiteViewDomainTransformer {
         } catch (MalformedURLException e) {
             throw new IllegalArgumentException("Wrong url in site request", e);
         }
-        return new Site(url);
+        return new Site.Builder(url).build();
     }
     
     public SiteDetails domainToDetails(Site domain){

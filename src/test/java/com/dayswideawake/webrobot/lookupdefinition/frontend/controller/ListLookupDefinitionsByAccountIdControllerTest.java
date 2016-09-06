@@ -186,7 +186,8 @@ public class ListLookupDefinitionsByAccountIdControllerTest extends AbstractTest
 	private List<LookupDefinition> createTestLookupDefinitions() throws MalformedURLException{
 		List<LookupDefinition> testLookupDefinitions = new ArrayList<>();
 		for(int i = 0; i < 100; i++){
-			Site site = new Site(new URL(String.format("http://site-%d.com", i)));
+			URL url = new URL(String.format("http://site-%d.com", i));
+			Site site = new Site.Builder(url).build();
 			Selector selector = new SelectorCss("body");
 			Long intervalInSeconds = Long.valueOf(i + 10);
 			Long accountId = Long.valueOf(i / 50 + 1);
