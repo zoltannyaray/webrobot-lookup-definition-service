@@ -54,8 +54,10 @@ public class LookupDefinitionServiceImpl implements LookupDefinitionService {
 	public Page<LookupDefinition> getLookupDefinitionsForSchedule(Pageable pageable) {
 		QLookupDefinitionEntity lookupDefinition = QLookupDefinitionEntity.lookupDefinitionEntity;
         Long currentTimeStamp = new Date().getTime();
-        BooleanExpression lastLookupWasMoreThanIntervalSecondsAgo = lookupDefinition.lastLookupAt.add(lookupDefinition.intervalInSeconds.multiply(1000)).goe(currentTimeStamp);
-        Page<LookupDefinitionEntity> entityPage = repository.findAll(lastLookupWasMoreThanIntervalSecondsAgo, pageable);
+        BooleanExpression lastLookupWasMoreThanIntervalSecondsAgo = lookupDefinition.lastLookupAt.add(lookupDefinition.intervalInSeconds.multiply(1000)).loe(currentTimeStamp);
+        BooleanExpression lookupHasNotBeenMadeYet = lookupDefinition.lastLookupAt.isNull();
+        BooleanExpression needToSchedule = lookupHasNotBeenMadeYet.or(lastLookupWasMoreThanIntervalSecondsAgo);
+        Page<LookupDefinitionEntity> entityPage = repository.findAll(needToSchedule, pageable);
         return entityPage.map(domainEntityTransformer);
 	}
 
