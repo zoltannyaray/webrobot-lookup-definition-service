@@ -20,6 +20,7 @@ import org.springframework.test.web.servlet.MockMvc;
 import org.springframework.test.web.servlet.RequestBuilder;
 import org.springframework.test.web.servlet.setup.MockMvcBuilders;
 import org.springframework.web.context.WebApplicationContext;
+import org.testng.annotations.AfterClass;
 import org.testng.annotations.BeforeClass;
 import org.testng.annotations.Test;
 
@@ -28,6 +29,7 @@ import com.dayswideawake.webrobot.lookupdefinition.backend.domain.Selector;
 import com.dayswideawake.webrobot.lookupdefinition.backend.domain.SelectorCss;
 import com.dayswideawake.webrobot.lookupdefinition.backend.domain.SelectorXPath;
 import com.dayswideawake.webrobot.lookupdefinition.backend.domain.Site;
+import com.dayswideawake.webrobot.lookupdefinition.backend.repository.dao.LookupDefinitionRepository;
 import com.dayswideawake.webrobot.lookupdefinition.backend.service.LookupDefinitionService;
 import com.dayswideawake.webrobot.lookupdefinition.frontend.model.SelectorTypeModel;
 import com.dayswideawake.webrobot.lookupdefinition.frontend.url.LookupDefinitionUrls;
@@ -39,6 +41,8 @@ public class ViewLookupDefinitionControllerTest extends AbstractTestNGSpringCont
 	private WebApplicationContext webApplicationContext;
 	@Autowired
 	private LookupDefinitionService lookupDefinitionService;
+	@Autowired
+	private LookupDefinitionRepository lookupDefinitionRepository;
 	private MediaType jsonContentType = MediaType.APPLICATION_JSON_UTF8;
 	private MockMvc mockMvc;
 	private LookupDefinition testLookupDefinition;
@@ -48,6 +52,11 @@ public class ViewLookupDefinitionControllerTest extends AbstractTestNGSpringCont
 		mockMvc = MockMvcBuilders.webAppContextSetup(webApplicationContext).build();
 		testLookupDefinition = lookupDefinitionService.addLookupDefinition(getNewLookupDefinition());
 	}
+	
+	@AfterClass
+	public void teardown(){
+		lookupDefinitionRepository.deleteAll();
+	}
 
 	@Test
 	public void viewLookupDefinitionShouldWork() throws Exception {
@@ -56,7 +65,7 @@ public class ViewLookupDefinitionControllerTest extends AbstractTestNGSpringCont
 		Link expectedSelfLink = linkTo(methodOn(ViewLookupDefinitionController.class).handle(testLookupDefinition.getId())).withSelfRel();
 		mockMvc.perform(requestBuilder)
 				.andExpect(status().isOk())
-				.andExpect(content().contentType(jsonContentType))
+				.andExpect(content().contentTypeCompatibleWith(jsonContentType))
 				.andExpect(jsonPath("$.id", is(testLookupDefinition.getId().intValue())))
 				.andExpect(jsonPath("$.accountId", is(testLookupDefinition.getAccountId().intValue())))
 				.andExpect(jsonPath("$.intervalInSeconds", is(testLookupDefinition.getIntervalInSeconds().intValue())))

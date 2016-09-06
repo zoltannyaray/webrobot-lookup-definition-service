@@ -18,9 +18,11 @@ import org.springframework.test.web.servlet.MockMvc;
 import org.springframework.test.web.servlet.RequestBuilder;
 import org.springframework.test.web.servlet.setup.MockMvcBuilders;
 import org.springframework.web.context.WebApplicationContext;
+import org.testng.annotations.AfterClass;
 import org.testng.annotations.BeforeClass;
 import org.testng.annotations.Test;
 
+import com.dayswideawake.webrobot.lookupdefinition.backend.repository.dao.LookupDefinitionRepository;
 import com.dayswideawake.webrobot.lookupdefinition.frontend.model.AddLookupDefinitionRequest;
 import com.dayswideawake.webrobot.lookupdefinition.frontend.model.AddSelectorRequest;
 import com.dayswideawake.webrobot.lookupdefinition.frontend.model.AddSiteRequest;
@@ -34,12 +36,19 @@ public class AddLookupDefinitionControllerTest extends AbstractTestNGSpringConte
 	private WebApplicationContext webApplicationContext;
 	@Autowired
 	private MappingJackson2HttpMessageConverter mappingJackson2HttpMessageConverter;
+	@Autowired
+	private LookupDefinitionRepository lookupDefinitionRepository;
 	private MediaType jsonContentType = MediaType.APPLICATION_JSON_UTF8;
 	private MockMvc mockMvc;
 
 	@BeforeClass
 	public void setup() {
 		mockMvc = MockMvcBuilders.webAppContextSetup(webApplicationContext).build();
+	}
+	
+	@AfterClass
+	public void teardown(){
+		lookupDefinitionRepository.deleteAll();
 	}
 
 	@Test
@@ -49,7 +58,7 @@ public class AddLookupDefinitionControllerTest extends AbstractTestNGSpringConte
 		RequestBuilder requestBuilder = post(LookupDefinitionUrls.BASE_URL).content(jsonRequest).contentType(jsonContentType).accept(jsonContentType);
 		mockMvc.perform(requestBuilder)
 				.andExpect(status().isCreated())
-				.andExpect(content().contentType(jsonContentType))
+				.andExpect(content().contentTypeCompatibleWith(jsonContentType))
 				.andExpect(jsonPath("$.accountId", is(request.getAccountId().intValue())))
 				.andExpect(jsonPath("$.intervalInSeconds", is(request.getIntervalInSeconds().intValue())))
 				.andExpect(jsonPath("$.selector.selector", is(request.getSelector().getSelector())))
