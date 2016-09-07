@@ -36,9 +36,9 @@ public class LookupDefinitionServiceImplTest extends AbstractTestNGSpringContext
 	public void teardown() {
 		lookupDefinitionRepository.deleteAll();
 	}
-	
+
 	@BeforeMethod
-	public void setup(){
+	public void setup() {
 		lookupDefinitionRepository.deleteAll();
 	}
 
@@ -54,25 +54,25 @@ public class LookupDefinitionServiceImplTest extends AbstractTestNGSpringContext
 		Page<LookupDefinition> lookupDefintions = lookupDefinitionService.getLookupDefinitionsByAccountId(accountId, new PageRequest(0, 1000));
 		assertEquals(lookupDefintions.getTotalElements(), 1);
 	}
-	
+
 	@Test
-	public void shouldReturnCorrectNumberOfLookupDefinitionsForSchedule() throws MalformedURLException{
+	public void shouldReturnCorrectNumberOfLookupDefinitionsForSchedule() throws MalformedURLException {
 		addTestLookupDefinitionsForSchedule();
 		PageRequest pageRequest = new PageRequest(0, 100);
 		Page<LookupDefinition> lookupDefinitionsForSchedule = lookupDefinitionService.getLookupDefinitionsForSchedule(pageRequest);
 		Assert.assertEquals(lookupDefinitionsForSchedule.getTotalElements(), 6);
 	}
-	
-	private void addTestLookupDefinitionsForSchedule() throws MalformedURLException{
+
+	private void addTestLookupDefinitionsForSchedule() throws MalformedURLException {
 		Calendar calendar = Calendar.getInstance();
 		calendar.add(Calendar.SECOND, -100);
-		for(int i = 0; i < 10; i++){
+		for (int i = 0; i < 10; i++) {
 			URL url = new URL("http://example.com");
 			Site site = new Site.Builder(url).build();
 			Selector selector = new SelectorCss("body");
 			Long intervalInSeconds = 70L;
 			LookupDefinition.Builder lookupDefinitionBuilder = new LookupDefinition.Builder(site, selector, intervalInSeconds);
-			if(i < 8){
+			if (i < 8) {
 				Date lastLookupAt = calendar.getTime();
 				lookupDefinitionBuilder.lastLookupAt(lastLookupAt);
 			}
