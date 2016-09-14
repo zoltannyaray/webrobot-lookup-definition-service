@@ -1,5 +1,5 @@
 server:
-  port: 9000
+  port: 4002
 #server:
 #  context-path: /webrobot-lookup-definition-service
 spring:
@@ -23,7 +23,7 @@ spring:
       bindings:
         new-lookup-definitions:
           content-type: application/json
-      
+    
 ---
 
 spring:
