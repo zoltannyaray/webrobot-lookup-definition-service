@@ -18,6 +18,11 @@ spring:
       enabled: always
 #  main:
 #    web-environment: false
+  cloud:
+    stream:
+      bindings:
+        new-lookup-definitions:
+          content-type: application/json
       
 ---
 
