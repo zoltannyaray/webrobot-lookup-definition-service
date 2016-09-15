@@ -8,8 +8,9 @@ import com.dayswideawake.webrobot.lookupdefinition.messaging.model.LookupDefinit
 @Component
 public class LookupDefinitionDomainMessageTransformer {
 
-	public LookupDefinitionCreatedEventMessage eventToMessage(LookupDefinitionCreatedEvent lookupDefinitionCreatedEvent){
-		Long lookupDefinitionId = lookupDefinitionCreatedEvent.getLookupDefinitionId();
-		return new LookupDefinitionCreatedEventMessage(lookupDefinitionId);
+	public LookupDefinitionCreatedEventMessage eventToMessage(LookupDefinitionCreatedEvent event) {
+		return new LookupDefinitionCreatedEventMessage.Builder(event.getLookupDefinitionId(), event.getIntervalInSeconds())
+				.accountId(event.getAccountId())
+				.build();
 	}
 }

@@ -8,9 +8,10 @@ import com.dayswideawake.webrobot.lookupdefinition.backend.event.LookupDefinitio
 @Component
 public class LookupDefinitionDomainEventTransformer {
 
-	public LookupDefinitionCreatedEvent domainToCreatedEvent(LookupDefinition lookupDefinition){
-		Long lookupDefinitionId = lookupDefinition.getId();
-		return new LookupDefinitionCreatedEvent(lookupDefinitionId);
+	public LookupDefinitionCreatedEvent domainToCreatedEvent(LookupDefinition domain) {
+		return new LookupDefinitionCreatedEvent.Builder(domain.getId(), domain.getIntervalInSeconds())
+				.accountId(domain.getAccountId())
+				.build();
 	}
-	
+
 }
