@@ -1,16 +1,21 @@
 package com.dayswideawake.webrobot.lookupdefinition.backend.service;
 
-import static org.testng.Assert.assertEquals;
-
+import java.io.IOException;
 import java.net.MalformedURLException;
 import java.net.URL;
 import java.util.Calendar;
 import java.util.Date;
+import java.util.logging.Level;
+import java.util.logging.Logger;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
+import org.springframework.cloud.stream.binder.BinderFactory;
+import org.springframework.cloud.stream.test.binder.MessageCollector;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageRequest;
+import org.springframework.messaging.Message;
+import org.springframework.messaging.MessageChannel;
 import org.springframework.test.context.testng.AbstractTestNGSpringContextTests;
 import org.springframework.web.util.UriComponentsBuilder;
 import org.testng.Assert;
@@ -23,6 +28,11 @@ import com.dayswideawake.webrobot.lookupdefinition.backend.domain.Selector;
 import com.dayswideawake.webrobot.lookupdefinition.backend.domain.SelectorCss;
 import com.dayswideawake.webrobot.lookupdefinition.backend.domain.Site;
 import com.dayswideawake.webrobot.lookupdefinition.backend.repository.dao.LookupDefinitionRepository;
+import com.dayswideawake.webrobot.lookupdefinition.messaging.Channels;
+import com.dayswideawake.webrobot.lookupdefinition.messaging.model.LookupDefinitionCreatedEventMessage;
+import com.fasterxml.jackson.core.JsonParseException;
+import com.fasterxml.jackson.databind.JsonMappingException;
+import com.fasterxml.jackson.databind.ObjectMapper;
 
 @SpringBootTest
 public class LookupDefinitionServiceImplTest extends AbstractTestNGSpringContextTests {
@@ -31,28 +41,36 @@ public class LookupDefinitionServiceImplTest extends AbstractTestNGSpringContext
 	private LookupDefinitionService lookupDefinitionService;
 	@Autowired
 	private LookupDefinitionRepository lookupDefinitionRepository;
-
-	@AfterMethod
-	public void teardown() {
-		lookupDefinitionRepository.deleteAll();
-	}
+	@Autowired
+	private Channels channels;
+	@Autowired
+	private MessageCollector messageCollector;
+	@Autowired
+	private ObjectMapper mapper;
 
 	@BeforeMethod
 	public void setup() {
+		messageCollector.forChannel(channels.newLookupDefinitions()).clear();
 		lookupDefinitionRepository.deleteAll();
 	}
 
 	@Test
-	public void shouldSaveAndGetLookupDefinition() throws MalformedURLException {
+	public void shouldSaveAndGetLookupDefinition() throws JsonParseException, JsonMappingException, IOException {
 		Long accountId = 1L;
 		URL url = UriComponentsBuilder.fromUriString("http://example.com").build().toUri().toURL();
 		Site site = new Site.Builder(url).build();
 		Selector selector = new SelectorCss("body>h1");
 		Long intervalInSeconds = 10L;
 		LookupDefinition lookupDefintion = new LookupDefinition.Builder(site, selector, intervalInSeconds).accountId(accountId).build();
-		lookupDefinitionService.addLookupDefinition(lookupDefintion);
+		LookupDefinition createdLookupDefinition = lookupDefinitionService.addLookupDefinition(lookupDefintion);
 		Page<LookupDefinition> lookupDefintions = lookupDefinitionService.getLookupDefinitionsByAccountId(accountId, new PageRequest(0, 1000));
-		assertEquals(lookupDefintions.getTotalElements(), 1);
+		Assert.assertEquals(lookupDefintions.getTotalElements(), 1);
+		Message<String> message = (Message<String>) messageCollector.forChannel(channels.newLookupDefinitions()).poll();
+		Assert.assertNotNull(message);
+		LookupDefinitionCreatedEventMessage messagePayload = mapper.readValue(message.getPayload(), LookupDefinitionCreatedEventMessage.class);
+		Assert.assertEquals(messagePayload.getAccountId(), accountId);
+		Assert.assertEquals(messagePayload.getIntervalInSeconds(), intervalInSeconds);
+		Assert.assertEquals(messagePayload.getLookupDefinitionId(), createdLookupDefinition.getId());
 	}
 
 	@Test

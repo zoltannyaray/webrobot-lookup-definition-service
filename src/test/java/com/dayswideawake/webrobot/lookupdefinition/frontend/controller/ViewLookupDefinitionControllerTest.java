@@ -36,7 +36,7 @@ import com.dayswideawake.webrobot.lookupdefinition.frontend.url.LookupDefinition
 
 @SpringBootTest
 public class ViewLookupDefinitionControllerTest extends AbstractTestNGSpringContextTests {
-	
+
 	@Autowired
 	private WebApplicationContext webApplicationContext;
 	@Autowired
@@ -52,9 +52,9 @@ public class ViewLookupDefinitionControllerTest extends AbstractTestNGSpringCont
 		mockMvc = MockMvcBuilders.webAppContextSetup(webApplicationContext).build();
 		testLookupDefinition = lookupDefinitionService.addLookupDefinition(getNewLookupDefinition());
 	}
-	
+
 	@AfterClass
-	public void teardown(){
+	public void teardown() {
 		lookupDefinitionRepository.deleteAll();
 	}
 
@@ -74,32 +74,30 @@ public class ViewLookupDefinitionControllerTest extends AbstractTestNGSpringCont
 				.andExpect(jsonPath("$.site.url", is(testLookupDefinition.getSite().getUrl().toString())))
 				.andExpect(jsonPath("$._links.self.href", is(expectedSelfLink.getHref())));
 	}
-	
+
 	@Test
-	public void viewLookupDefinitionShouldReturn404OnNotExistingResource() throws Exception{
+	public void viewLookupDefinitionShouldReturn404OnNotExistingResource() throws Exception {
 		String resourceUrl = LookupDefinitionUrls.BASE_URL + "/1000";
 		RequestBuilder requestBuilder = get(resourceUrl).accept(jsonContentType);
 		mockMvc.perform(requestBuilder)
-			.andExpect(status().isNotFound());
+				.andExpect(status().isNotFound());
 	}
-	
-	private String getSelectorJsonText(Selector selector){
+
+	private String getSelectorJsonText(Selector selector) {
 		String result = null;
-		if(selector instanceof SelectorCss){
+		if (selector instanceof SelectorCss) {
 			result = ((SelectorCss) selector).getSelector();
-		}
-		else if(selector instanceof SelectorXPath){
+		} else if (selector instanceof SelectorXPath) {
 			result = ((SelectorXPath) selector).getSelector();
 		}
 		return result;
 	}
-	
-	private String getSelectorTypeJsonText(Selector selector){
+
+	private String getSelectorTypeJsonText(Selector selector) {
 		String result = null;
-		if(selector instanceof SelectorCss){
+		if (selector instanceof SelectorCss) {
 			result = SelectorTypeModel.CSS.name();
-		}
-		else if(selector instanceof SelectorXPath){
+		} else if (selector instanceof SelectorXPath) {
 			result = SelectorTypeModel.XPATH.name();
 		}
 		return result;
