@@ -24,6 +24,7 @@ import org.testng.annotations.AfterClass;
 import org.testng.annotations.BeforeClass;
 import org.testng.annotations.Test;
 
+import com.dayswideawake.webrobot.lookupdefinition.TestGroup;
 import com.dayswideawake.webrobot.lookupdefinition.backend.domain.LookupDefinition;
 import com.dayswideawake.webrobot.lookupdefinition.backend.domain.Selector;
 import com.dayswideawake.webrobot.lookupdefinition.backend.domain.SelectorCss;
@@ -35,7 +36,8 @@ import com.dayswideawake.webrobot.lookupdefinition.frontend.model.SelectorTypeMo
 import com.dayswideawake.webrobot.lookupdefinition.frontend.url.LookupDefinitionUrls;
 
 @SpringBootTest
-public class ViewLookupDefinitionControllerTest extends AbstractTestNGSpringContextTests {
+@Test(groups=TestGroup.GROUP_INTEGRATION)
+public class ViewLookupDefinitionControllerIntegrationTest extends AbstractTestNGSpringContextTests {
 
 	@Autowired
 	private WebApplicationContext webApplicationContext;
@@ -58,7 +60,6 @@ public class ViewLookupDefinitionControllerTest extends AbstractTestNGSpringCont
 		lookupDefinitionRepository.deleteAll();
 	}
 
-	@Test
 	public void viewLookupDefinitionShouldWork() throws Exception {
 		String resourceUrl = LookupDefinitionUrls.BASE_URL + "/" + testLookupDefinition.getId();
 		RequestBuilder requestBuilder = get(resourceUrl).accept(jsonContentType);
@@ -75,7 +76,6 @@ public class ViewLookupDefinitionControllerTest extends AbstractTestNGSpringCont
 				.andExpect(jsonPath("$._links.self.href", is(expectedSelfLink.getHref())));
 	}
 
-	@Test
 	public void viewLookupDefinitionShouldReturn404OnNotExistingResource() throws Exception {
 		String resourceUrl = LookupDefinitionUrls.BASE_URL + "/1000";
 		RequestBuilder requestBuilder = get(resourceUrl).accept(jsonContentType);

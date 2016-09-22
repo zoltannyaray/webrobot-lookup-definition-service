@@ -36,10 +36,6 @@ public class LookupDefinition {
 		return selector;
 	}
 
-	public void setSelector(Selector selector) {
-		this.selector = selector;
-	}
-
 	public Long getIntervalInSeconds() {
 		return intervalInSeconds;
 	}

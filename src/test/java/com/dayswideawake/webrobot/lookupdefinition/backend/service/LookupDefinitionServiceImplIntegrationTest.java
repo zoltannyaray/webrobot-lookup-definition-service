@@ -18,6 +18,7 @@ import org.testng.Assert;
 import org.testng.annotations.BeforeMethod;
 import org.testng.annotations.Test;
 
+import com.dayswideawake.webrobot.lookupdefinition.TestGroup;
 import com.dayswideawake.webrobot.lookupdefinition.backend.domain.LookupDefinition;
 import com.dayswideawake.webrobot.lookupdefinition.backend.domain.Selector;
 import com.dayswideawake.webrobot.lookupdefinition.backend.domain.SelectorCss;
@@ -30,7 +31,8 @@ import com.fasterxml.jackson.databind.JsonMappingException;
 import com.fasterxml.jackson.databind.ObjectMapper;
 
 @SpringBootTest
-public class LookupDefinitionServiceImplTest extends AbstractTestNGSpringContextTests {
+@Test(groups=TestGroup.GROUP_INTEGRATION)
+public class LookupDefinitionServiceImplIntegrationTest extends AbstractTestNGSpringContextTests {
 
 	@Autowired
 	private LookupDefinitionService lookupDefinitionService;
@@ -49,7 +51,6 @@ public class LookupDefinitionServiceImplTest extends AbstractTestNGSpringContext
 		lookupDefinitionRepository.deleteAll();
 	}
 
-	@Test
 	public void shouldSaveAndGetLookupDefinition() throws JsonParseException, JsonMappingException, IOException {
 		Long accountId = 1L;
 		URL url = UriComponentsBuilder.fromUriString("http://example.com").build().toUri().toURL();
@@ -68,7 +69,6 @@ public class LookupDefinitionServiceImplTest extends AbstractTestNGSpringContext
 		Assert.assertEquals(messagePayload.getLookupDefinitionId(), createdLookupDefinition.getId());
 	}
 
-	@Test
 	public void shouldReturnCorrectNumberOfLookupDefinitionsForSchedule() throws MalformedURLException {
 		addTestLookupDefinitionsForSchedule();
 		PageRequest pageRequest = new PageRequest(0, 100);

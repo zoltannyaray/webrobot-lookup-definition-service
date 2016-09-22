@@ -6,10 +6,6 @@ public class LookupDefinitionCreatedEvent {
 	private Long accountId;
 	private Long intervalInSeconds;
 
-	public LookupDefinitionCreatedEvent(Long lookupDefinitionId) {
-		this.lookupDefinitionId = lookupDefinitionId;
-	}
-
 	private LookupDefinitionCreatedEvent(Builder builder) {
 		this.lookupDefinitionId = builder.lookupDefinitionId;
 		this.accountId = builder.accountId;

@@ -22,6 +22,7 @@ import org.testng.annotations.AfterClass;
 import org.testng.annotations.BeforeClass;
 import org.testng.annotations.Test;
 
+import com.dayswideawake.webrobot.lookupdefinition.TestGroup;
 import com.dayswideawake.webrobot.lookupdefinition.backend.repository.dao.LookupDefinitionRepository;
 import com.dayswideawake.webrobot.lookupdefinition.frontend.model.AddLookupDefinitionRequest;
 import com.dayswideawake.webrobot.lookupdefinition.frontend.model.AddSelectorRequest;
@@ -30,7 +31,8 @@ import com.dayswideawake.webrobot.lookupdefinition.frontend.model.SelectorTypeMo
 import com.dayswideawake.webrobot.lookupdefinition.frontend.url.LookupDefinitionUrls;
 
 @SpringBootTest
-public class AddLookupDefinitionControllerTest extends AbstractTestNGSpringContextTests {
+@Test(groups=TestGroup.GROUP_INTEGRATION)
+public class AddLookupDefinitionControllerIntegrationTest extends AbstractTestNGSpringContextTests {
 
 	@Autowired
 	private WebApplicationContext webApplicationContext;
@@ -51,7 +53,6 @@ public class AddLookupDefinitionControllerTest extends AbstractTestNGSpringConte
 		lookupDefinitionRepository.deleteAll();
 	}
 
-	@Test
 	public void addLookupDefinitionShouldWork() throws Exception {
 		AddLookupDefinitionRequest request = createAddLookupDefinitionRequest();
 		String jsonRequest = toJson(request);

@@ -23,6 +23,7 @@ import org.testng.annotations.AfterClass;
 import org.testng.annotations.BeforeClass;
 import org.testng.annotations.Test;
 
+import com.dayswideawake.webrobot.lookupdefinition.TestGroup;
 import com.dayswideawake.webrobot.lookupdefinition.backend.domain.LookupDefinition;
 import com.dayswideawake.webrobot.lookupdefinition.backend.domain.Selector;
 import com.dayswideawake.webrobot.lookupdefinition.backend.domain.SelectorCss;
@@ -34,7 +35,8 @@ import com.dayswideawake.webrobot.lookupdefinition.frontend.model.SelectorTypeMo
 import com.dayswideawake.webrobot.lookupdefinition.frontend.url.LookupDefinitionUrls;
 
 @SpringBootTest
-public class ListLookupDefinitionsByAccountIdControllerTest extends AbstractTestNGSpringContextTests {
+@Test(groups=TestGroup.GROUP_INTEGRATION)
+public class ListLookupDefinitionsByAccountIdControllerIntegrationTest extends AbstractTestNGSpringContextTests {
 
 	@Autowired
 	private WebApplicationContext webApplicationContext;
@@ -57,7 +59,6 @@ public class ListLookupDefinitionsByAccountIdControllerTest extends AbstractTest
 		lookupDefinitionRepository.deleteAll();
 	}
 	
-	@Test
 	public void listByAccountIdShouldListCorrectNumberOfTotalElements() throws Exception{
 		String url = LookupDefinitionUrls.getListByAccountIdUrl(1L);
 		RequestBuilder requestBuilder = get(url).accept(jsonContentType);
@@ -73,7 +74,6 @@ public class ListLookupDefinitionsByAccountIdControllerTest extends AbstractTest
 			.andExpect(jsonPath("$.page.totalElements", is(50)));
 	}
 	
-	@Test
 	public void listByAccountIdShouldListCorrect1stPageFor1stAccountId() throws Exception{
 		String url = LookupDefinitionUrls.getListByAccountIdUrl(1L);
 		RequestBuilder requestBuilder = get(url).accept(jsonContentType).param("page", "0").param("size", "10");;
@@ -95,7 +95,6 @@ public class ListLookupDefinitionsByAccountIdControllerTest extends AbstractTest
 			.andExpect(jsonPath("$._embedded.lookupDefinitionDetailsList[9].selector.selectorType", is(getSelectorTypeJsonText(testLookupDefinitions.get(9).getSelector()))));
 	}
 	
-	@Test
 	public void listByAccountIdShouldListCorrect2ndPageFor1stAccountId() throws Exception{
 		String url = LookupDefinitionUrls.getListByAccountIdUrl(1L);
 		RequestBuilder requestBuilder = get(url).accept(jsonContentType).param("page", "1").param("size", "10");
@@ -117,7 +116,6 @@ public class ListLookupDefinitionsByAccountIdControllerTest extends AbstractTest
 			.andExpect(jsonPath("$._embedded.lookupDefinitionDetailsList[9].selector.selectorType", is(getSelectorTypeJsonText(testLookupDefinitions.get(19).getSelector()))));
 	}
 	
-	@Test
 	public void listByAccountIdShouldListCorrect1stPageFor2ndAccountId() throws Exception{
 		String url = LookupDefinitionUrls.getListByAccountIdUrl(2L);
 		RequestBuilder requestBuilder = get(url).accept(jsonContentType).param("page", "0").param("size", "10");;
@@ -139,7 +137,6 @@ public class ListLookupDefinitionsByAccountIdControllerTest extends AbstractTest
 			.andExpect(jsonPath("$._embedded.lookupDefinitionDetailsList[9].selector.selectorType", is(getSelectorTypeJsonText(testLookupDefinitions.get(59).getSelector()))));
 	}
 	
-	@Test
 	public void listByAccountIdShouldListCorrect2ndPageFor2ndAccountId() throws Exception{
 		String url = LookupDefinitionUrls.getListByAccountIdUrl(2L);
 		RequestBuilder requestBuilder = get(url).accept(jsonContentType).param("page", "1").param("size", "10");

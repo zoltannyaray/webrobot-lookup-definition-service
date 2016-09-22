@@ -5,7 +5,8 @@ import org.springframework.test.context.testng.AbstractTestNGSpringContextTests;
 import org.testng.annotations.Test;
 
 @SpringBootTest
-public class WebrobotLookupDefinitionServiceApplicationTests extends AbstractTestNGSpringContextTests {
+@Test(groups=TestGroup.GROUP_INTEGRATION)
+public class WebrobotLookupDefinitionServiceApplicationIntegrationTest extends AbstractTestNGSpringContextTests {
 
 	@Test
 	public void contextLoads() {
