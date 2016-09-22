@@ -4,7 +4,7 @@ import com.fasterxml.jackson.annotation.JsonCreator;
 
 public class LookupDefinitionDetails {
 
-    private Long id;
+    private Long lookupDefinitionId;
     private Long accountId;
     private Long intervalInSeconds;
     private SelectorDetails selector;
@@ -14,20 +14,20 @@ public class LookupDefinitionDetails {
     public LookupDefinitionDetails() {
     }
 
-    public LookupDefinitionDetails(Long id, Long accountId, Long intervalInSeconds, SelectorDetails selector, SiteDetails site) {
-        this.id = id;
+    public LookupDefinitionDetails(Long lookupDefinitionId, Long accountId, Long intervalInSeconds, SelectorDetails selector, SiteDetails site) {
+        this.lookupDefinitionId = lookupDefinitionId;
         this.accountId = accountId;
         this.intervalInSeconds = intervalInSeconds;
         this.selector = selector;
         this.site = site;
     }
 
-    public Long getId() {
-        return id;
+    public Long getLookupDefinitionId() {
+        return lookupDefinitionId;
     }
 
-    public void setId(Long id) {
-        this.id = id;
+    public void setLookupDefinitionId(Long id) {
+        this.lookupDefinitionId = id;
     }
 
     public Long getAccountId() {
