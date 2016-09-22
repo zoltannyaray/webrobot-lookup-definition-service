@@ -66,7 +66,7 @@ public class ViewLookupDefinitionControllerTest extends AbstractTestNGSpringCont
 		mockMvc.perform(requestBuilder)
 				.andExpect(status().isOk())
 				.andExpect(content().contentTypeCompatibleWith(jsonContentType))
-				.andExpect(jsonPath("$.id", is(testLookupDefinition.getId().intValue())))
+				.andExpect(jsonPath("$.lookupDefinitionId", is(testLookupDefinition.getId().intValue())))
 				.andExpect(jsonPath("$.accountId", is(testLookupDefinition.getAccountId().intValue())))
 				.andExpect(jsonPath("$.intervalInSeconds", is(testLookupDefinition.getIntervalInSeconds().intValue())))
 				.andExpect(jsonPath("$.selector.selector", is(getSelectorJsonText(testLookupDefinition.getSelector()))))
