@@ -1,0 +1,6 @@
+version: "3"
+services:
+  webrobot-lookup-definition-service:
+    image: zula/webrobot-lookup-definition-service
+    ports:
+     - "4002"

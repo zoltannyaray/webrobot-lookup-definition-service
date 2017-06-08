@@ -26,6 +26,8 @@
 		<apt-maven-plugin.version>1.1.3</apt-maven-plugin.version>
 		<querydsl.version>4.1.4</querydsl.version>
 		<spring-cloud-dependencies.version>Brixton.SR5</spring-cloud-dependencies.version>
+		<docker.image.prefix>zula</docker.image.prefix>
+		<dockerfile-maven-plugin.version>1.2.2</dockerfile-maven-plugin.version>
 	</properties>
 
 	<dependencyManagement>
@@ -41,6 +43,7 @@
 	</dependencyManagement>
 
 	<build>
+		<finalName>${project.artifactId}</finalName>
 		<plugins>
 			<plugin>
 				<groupId>org.springframework.boot</groupId>
@@ -97,18 +100,19 @@
 			</plugin>
 			<plugin>
 				<groupId>com.spotify</groupId>
-				<artifactId>docker-maven-plugin</artifactId>
-				<version>0.4.11</version>
+				<artifactId>dockerfile-maven-plugin</artifactId>
+				<version>${dockerfile-maven-plugin.version}</version>
+				<executions>
+					<execution>
+						<id>default</id>
+						<goals>
+							<goal>build</goal>
+						</goals>
+					</execution>
+				</executions>
 				<configuration>
-					<imageName>${docker.image.prefix}/${project.artifactId}</imageName>
-					<dockerDirectory>src/main/docker</dockerDirectory>
-					<resources>
-						<resource>
-							<targetPath>/</targetPath>
-							<directory>${project.build.directory}</directory>
-							<include>${project.build.finalName}.jar</include>
-						</resource>
-					</resources>
+					<verbose>true</verbose>
+					<repository>${docker.image.prefix}/${project.artifactId}</repository>
 				</configuration>
 			</plugin>
 		</plugins>
